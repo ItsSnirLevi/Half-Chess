@@ -1,0 +1,54 @@
+﻿@page
+@model Half_Chess__Razor_Server_.Pages.Users.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>TblUsers</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="TblUsers.FirstName" class="control-label"></label>
+                <input asp-for="TblUsers.FirstName" class="form-control" />
+                <span asp-validation-for="TblUsers.FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TblUsers.LastName" class="control-label"></label>
+                <input asp-for="TblUsers.LastName" class="form-control" />
+                <span asp-validation-for="TblUsers.LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TblUsers.Phone" class="control-label"></label>
+                <input asp-for="TblUsers.Phone" class="form-control" />
+                <span asp-validation-for="TblUsers.Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TblUsers.Country" class="control-label"></label>
+                <input asp-for="TblUsers.Country" class="form-control" />
+                <span asp-validation-for="TblUsers.Country" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TblUsers.CreatedAt" class="control-label"></label>
+                <input asp-for="TblUsers.CreatedAt" class="form-control" />
+                <span asp-validation-for="TblUsers.CreatedAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
