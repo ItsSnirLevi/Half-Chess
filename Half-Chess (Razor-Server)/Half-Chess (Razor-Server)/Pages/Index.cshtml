@@ -18,10 +18,10 @@
                     <label asp-for="User.Id"></label>
                 </div>
                 <div class="col-sm-2">
-                    <label asp-for="User.FirstName"></label>
+                    <label asp-for="User.FirstName">First Name</label>
                 </div>
                 <div class="col-sm-2">
-                    <label asp-for="User.LastName"></label>
+                    <label asp-for="User.LastName">Last Name</label>
                 </div>
                 <div class="col-sm-2">
                     <label asp-for="User.Phone"></label>
@@ -33,32 +33,42 @@
             </div>
             <div class="row mb-3">
                 <div class="col-sm-2">
-                    <input asp-for="User.Id" class="form-control"/>
+                    <input asp-for="User.Id" class="form-control" />
                     <span asp-validation-for="User.Id" class="text-danger"></span>
                 </div>
                 <div class="col-sm-2">
-                    <input asp-for="User.FirstName" class="form-control"/>
+                    <input asp-for="User.FirstName" class="form-control" />
                     <span asp-validation-for="User.FirstName" class="text-danger"></span>
                 </div>
                 <div class="col-sm-2">
                     <input asp-for="User.LastName" class="form-control" />
                 </div>
                 <div class="col-sm-2">
-                    <input asp-for="User.Phone" class="form-control"/>
+                    <input asp-for="User.Phone" class="form-control" />
                     <span asp-validation-for="User.Phone" class="text-danger"></span>
                 </div>
                 <div class="col-sm-2">
-                    <input asp-for="User.Country" class="form-control" />
+                    <select asp-for="User.Country" class="form-control" asp-items="Model.CountryOptions">
+                        <option value="">Select a country</option>
+                    </select>
                     <span asp-validation-for="User.Country" class="text-danger"></span>
                 </div>
 
             </div>
-            
+
             <div class="form-group mt-4">
-               <button asp-page="" class="btn btn-primary" autofocus>Submit!</button>
+                <button asp-page="" class="btn btn-primary" autofocus>Submit!</button>
             </div>
         </form>
     </div>
+</div>
+
+<div class="mt-4">
+    <a asp-page="./Users/Index">User DB and Queries</a>
+</div>
+
+<div class="mt-3">
+    <a href="Users">About the Authors</a>
 </div>
 
 
