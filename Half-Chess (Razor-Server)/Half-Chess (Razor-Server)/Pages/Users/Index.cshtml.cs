@@ -20,6 +20,14 @@ namespace Half_Chess__Razor_Server_.Pages.Users
         }
 
         public IList<TblUsers> TblUsers { get;set; } = default!;
+        public IList<PlayerLastPlayed> PlayerLastPlayedList = new List<PlayerLastPlayed>();
+        public TableFormat CurrentTableFormat { get; set; } = TableFormat.FullTable;
+
+        public enum TableFormat
+        {
+            FullTable,
+            LastPlayedOnly,
+        }
 
         public async Task OnGetAsync()
         {
@@ -28,5 +36,53 @@ namespace Half_Chess__Razor_Server_.Pages.Users
                 TblUsers = await _context.TblUsers.ToListAsync();
             }
         }
+
+        public async Task OnPostSortByNameAsync()
+        {
+            if (_context.TblUsers != null)
+            {
+                TblUsers = await _context.TblUsers.OrderBy(p => p.FirstName.ToLower()).ToListAsync();
+            }
+        }
+
+        public async Task OnPostShowLastPlayedAsync()
+        {
+            if (_context.TblUsers != null)
+            {
+                var players = await _context.TblUsers
+                .Select(p => new
+                    {
+                        Name = p.FirstName,
+                        LastGameDate = p.LastPlayed
+                    })
+                .OrderByDescending(p => EF.Functions.Collate(p.Name, "Latin1_General_BIN")) 
+                .ToListAsync();
+
+                PlayerLastPlayedList = players.Select(p => new PlayerLastPlayed
+                    {
+                        Name = p.Name,
+                        LastGameDate = p.LastGameDate 
+                    }).ToList();
+
+                CurrentTableFormat = TableFormat.LastPlayedOnly;
+            }
+        }
+
+        public async Task OnPostShowFirstPlayersByCountryAsync()
+        {
+            if (_context.TblUsers != null)
+            {
+                TblUsers = await _context.TblUsers
+                    .Where(p => p.LastPlayed != null)
+                    .GroupBy(p => p.Country)
+                    .Select(g => g.OrderBy(p => p.LastPlayed).First())
+                    .ToListAsync();
+
+                CurrentTableFormat = TableFormat.FullTable; 
+            }
+        }
+
+
+
     }
 }

@@ -8,7 +8,7 @@ namespace Half_Chess__Razor_Server_.Models
         public int Id { get; set; }
 
         [MinLength(2, ErrorMessage = "First Name must have at least 2 letters.")]
-        public string? FirstName { get; set; }
+        public string FirstName { get; set; } = default!;
         public string? LastName { get; set; }
 
         [RegularExpression(@"^\d{10}$", ErrorMessage = "Phone number must be exactly 10 digits.")]
@@ -17,5 +17,6 @@ namespace Half_Chess__Razor_Server_.Models
         [Required(ErrorMessage = "Country is required.")]
         public string? Country { get; set; }
         public DateTime CreatedAt { get; set; }
+        public DateTime? LastPlayed { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿@page
 @model Half_Chess__Razor_Server_.Pages.Users.IndexModel
+@using Half_Chess__Razor_Server_.Pages.Users 
 
 @{
     ViewData["Title"] = "Index";
@@ -10,6 +11,9 @@
 <p>
     <a asp-page="Create">Create New</a>
 </p>
+
+@if (Model.CurrentTableFormat == IndexModel.TableFormat.FullTable)
+{
 <table class="table">
     <thead>
         <tr>
@@ -30,6 +34,9 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.TblUsers[0].CreatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TblUsers[0].LastPlayed)
             </th>
             <th></th>
         </tr>
@@ -56,6 +63,9 @@
                 @Html.DisplayFor(modelItem => item.CreatedAt)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.LastPlayed)
+            </td>
+            <td>
                 <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
@@ -63,4 +73,35 @@
         </tr>
 }
     </tbody>
-</table>
+    </table>
+}
+else if (Model.CurrentTableFormat == IndexModel.TableFormat.LastPlayedOnly)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Player Name</th>
+                <th>Last Played</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var player in Model.PlayerLastPlayedList)
+            {
+                <tr>
+                    <td>@player.Name</td>
+                    <td>@player.LastGameDate?.ToString("yyyy-MM-dd")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<form action="" method="post">
+    <button asp-page="" asp-page-handler="SortByName" class="btn btn-primary" autofocus> Sort by name (case insensitive)</button>
+    <br />
+    <br />
+    <button asp-page="" asp-page-handler="ShowLastPlayed" class="btn btn-primary"> Players last game time</button>
+    <br />
+    <br />
+    <button asp-page="" asp-page-handler="ShowFirstPlayersByCountry" class="btn btn-primary"> Show first players by country</button>
+</form>
