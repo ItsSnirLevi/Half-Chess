@@ -8,52 +8,60 @@
     <h1 class="display-4">Register</h1>
 </div>
 
+<!-- Display success message -->
+@if (!string.IsNullOrEmpty(Model.SuccessMessage))
+{
+    <div class="alert alert-success mt-2">@Model.SuccessMessage</div>
+}
 
 <div class="row mt-4">
-    <div>
+    <div class="col-md-8 offset-md-2">
         <form method="post" autocomplete="on" action="">
 
-            <div class="row">
-                <div class="col-sm-2">
-                    <label asp-for="User.Id"></label>
-                </div>
-                <div class="col-sm-2">
-                    <label asp-for="User.FirstName">First Name</label>
-                </div>
-                <div class="col-sm-2">
-                    <label asp-for="User.LastName">Last Name</label>
-                </div>
-                <div class="col-sm-2">
-                    <label asp-for="User.Phone"></label>
-                </div>
-                <div class="col-sm-2">
-                    <label asp-for="User.Country"></label>
-                </div>
+            <div class="form-group">
+                <label asp-for="User.Id">ID</label>
 
+                <div class="d-flex align-items-center">
+                    <input asp-for="User.Id" class="form-control custom-input-width me-3" id="id-input" />
+
+                    <div class="free-ids-list ms-3">
+                        <p class="mb-1">Some available IDs:</p>
+                        <span>
+                            @foreach (var freeId in Model.FreeIds)
+                            {
+                                <span class="me-2">@freeId</span>
+                            }
+                        </span>
+                    </div>
+                </div>
+                <span asp-validation-for="User.Id" class="text-danger"></span>
             </div>
-            <div class="row mb-3">
-                <div class="col-sm-2">
-                    <input asp-for="User.Id" class="form-control" />
-                    <span asp-validation-for="User.Id" class="text-danger"></span>
-                </div>
-                <div class="col-sm-2">
-                    <input asp-for="User.FirstName" class="form-control" />
-                    <span asp-validation-for="User.FirstName" class="text-danger"></span>
-                </div>
-                <div class="col-sm-2">
-                    <input asp-for="User.LastName" class="form-control" />
-                </div>
-                <div class="col-sm-2">
-                    <input asp-for="User.Phone" class="form-control" />
-                    <span asp-validation-for="User.Phone" class="text-danger"></span>
-                </div>
-                <div class="col-sm-2">
-                    <select asp-for="User.Country" class="form-control" asp-items="Model.CountryOptions">
-                        <option value="">Select a country</option>
-                    </select>
-                    <span asp-validation-for="User.Country" class="text-danger"></span>
-                </div>
 
+
+            <div class="form-group">
+                <label asp-for="User.FirstName">First Name</label>
+                <input asp-for="User.FirstName" class="form-control custom-input-width" />
+                <span asp-validation-for="User.FirstName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="User.LastName">Last Name</label>
+                <input asp-for="User.LastName" class="form-control custom-input-width" />
+                <span asp-validation-for="User.LastName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="User.Phone"></label>
+                <input asp-for="User.Phone" class="form-control custom-input-width" />
+                <span asp-validation-for="User.Phone" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="User.Country"></label>
+                <select asp-for="User.Country" class="form-control custom-input-width" asp-items="Model.CountryOptions">
+                    <option value="">Select a country</option>
+                </select>
+                <span asp-validation-for="User.Country" class="text-danger"></span>
             </div>
 
             <div class="form-group mt-4">
@@ -62,13 +70,3 @@
         </form>
     </div>
 </div>
-
-<div class="mt-4">
-    <a asp-page="./Users/Index">User DB and Queries</a>
-</div>
-
-<div class="mt-3">
-    <a href="About">About the Authors</a>
-</div>
-
-

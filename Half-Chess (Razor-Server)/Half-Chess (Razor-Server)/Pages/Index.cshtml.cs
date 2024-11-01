@@ -20,10 +20,12 @@ namespace Half_Chess__Razor_Server_.Pages
             _context = context;
         }
 
-        public IList<TblUsers> TblUsers { get;set; } = default!;
+        public IList<TblUsers> TblUsers { get; set; } = default!;
 
         [BindProperty]
         public new TblUsers User { get; set; } = default!;
+        public string SuccessMessage { get; set; } = string.Empty;
+
 
         public List<SelectListItem> CountryOptions { get; set; } = new List<SelectListItem>
         {
@@ -44,24 +46,42 @@ namespace Half_Chess__Razor_Server_.Pages
                 if (userExists)
                 {
                     ModelState.AddModelError("User.Id", "This ID is already in use.");
+                    await PopulateFreeIdsAsync();
                     return Page();
                 }
 
                 User.CreatedAt = DateTime.Now;
                 _context.TblUsers.Add(User);
-                await _context.SaveChangesAsync(); 
+                await _context.SaveChangesAsync();
 
-                // return RedirectToPage("Success"); 
+                SuccessMessage = $"Registration successful! Welcome, {User.FirstName}. ID: {User.Id}";
             }
+            await PopulateFreeIdsAsync();
             return Page();
         }
-    
+
+        public List<string> FreeIds { get; set; } = new List<string>();
+
         public async Task OnGetAsync()
+        {
+            if (_context.TblUsers != null)
             {
-                if (_context.TblUsers != null)
-                {
-                    TblUsers = await _context.TblUsers.ToListAsync();
-                }
+                TblUsers = await _context.TblUsers.ToListAsync();
+                await PopulateFreeIdsAsync();
             }
+        }
+
+        private async Task PopulateFreeIdsAsync()
+        {
+            var allIds = await _context.TblUsers.Select(u => u.Id).ToListAsync();
+            var random = new Random();
+
+            FreeIds = Enumerable.Range(1, 1000)
+                    .Where(id => !allIds.Contains(id))
+                    .OrderBy(_ => random.Next())
+                    .Take(10)
+                    .Select(id => id.ToString())
+                    .ToList();
+        }
     }
 }

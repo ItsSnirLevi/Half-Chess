@@ -16,3 +16,16 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.custom-input-width {
+    max-width: 300px; 
+}
+
+.free-ids-list {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.free-ids-list span {
+    display: inline-block;
+}
