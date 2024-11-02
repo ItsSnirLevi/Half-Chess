@@ -4,26 +4,22 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Register</h1>
-</div>
-
-<!-- Display success message -->
 @if (!string.IsNullOrEmpty(Model.SuccessMessage))
 {
     <div class="alert alert-success mt-2">@Model.SuccessMessage</div>
 }
 
 <div class="row mt-4">
-    <div class="col-md-8 offset-md-2">
+    <div class="col-md-6">
+
+        <div class="text-center">
+            <h1 class="display-5">Register</h1>
+        </div>
         <form method="post" autocomplete="on" action="">
-
             <div class="form-group">
-                <label asp-for="User.Id">ID</label>
-
+                <label asp-for="User.Id" title="Choose a unique ID for signing into the game">ID</label>
                 <div class="d-flex align-items-center">
-                    <input asp-for="User.Id" class="form-control custom-input-width me-3" id="id-input" />
-
+                    <input asp-for="User.Id" class="form-control custom-input-width me-3" id="id-input" title="Choose a unique ID for signing into the game" />
                     <div class="free-ids-list ms-3">
                         <p class="mb-1">Some available IDs:</p>
                         <span>
@@ -37,7 +33,6 @@
                 <span asp-validation-for="User.Id" class="text-danger"></span>
             </div>
 
-
             <div class="form-group">
                 <label asp-for="User.FirstName">First Name</label>
                 <input asp-for="User.FirstName" class="form-control custom-input-width" />
@@ -45,19 +40,18 @@
             </div>
 
             <div class="form-group">
-                <label asp-for="User.LastName">Last Name</label>
+                <label asp-for="User.LastName">Last Name (optional)</label>
                 <input asp-for="User.LastName" class="form-control custom-input-width" />
-                <span asp-validation-for="User.LastName" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="User.Phone"></label>
+                <label asp-for="User.Phone">Phone</label>
                 <input asp-for="User.Phone" class="form-control custom-input-width" />
                 <span asp-validation-for="User.Phone" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="User.Country"></label>
+                <label asp-for="User.Country">Country</label>
                 <select asp-for="User.Country" class="form-control custom-input-width" asp-items="Model.CountryOptions">
                     <option value="">Select a country</option>
                 </select>
@@ -68,5 +62,16 @@
                 <button asp-page="" class="btn btn-primary" autofocus>Submit!</button>
             </div>
         </form>
+    </div>
+
+    <div class="col-md-6">
+        <div class="p-3 border rounded" style="background-color: #f8f9fa;">
+            <h2>Half Chess: A New Take on a Classic Battle!</h2>
+            <p>Welcome to Half Chess, where strategy meets speed on a condensed battlefield! In this fresh twist on the classic game, we play on a board that’s only half as wide—just 4 squares across.</p>
+            <p>Imagine traditional chess but with a tighter focus, as each player brings only their strongest right-side warriors: King, Bishop, Knight, and Rook, with pawns standing guard above.</p>
+            <p>The battlefield remains the usual 8 squares deep, maintaining the familiar distance between rivals. But there’s more! Here’s the twist: pawns now have a unique edge. They can move not only forward but also shift sideways by one square, allowing for a clever repositioning. However, these sideways moves are strictly strategic—no capturing in this direction!</p>
+            <p>Speed matters too. Every player has a limited time to make each move, keeping the game dynamic and thrilling. Miss your timer, and it’s game over!</p>
+            <p><strong>Ready to put your strategy to the test in this fast-paced, head-to-head showdown?</strong></p>
+        </div>
     </div>
 </div>

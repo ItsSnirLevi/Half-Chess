@@ -14,19 +14,15 @@ namespace Half_Chess__Razor_Server_.Pages
     public class IndexModel : PageModel
     {
         private readonly Half_Chess__Razor_Server_.Data.Half_Chess__Razor_Server_Context _context;
-
         public IndexModel(Half_Chess__Razor_Server_.Data.Half_Chess__Razor_Server_Context context)
         {
             _context = context;
         }
-
         public IList<TblUsers> TblUsers { get; set; } = default!;
 
         [BindProperty]
         public new TblUsers User { get; set; } = default!;
         public string SuccessMessage { get; set; } = string.Empty;
-
-
         public List<SelectListItem> CountryOptions { get; set; } = new List<SelectListItem>
         {
             new SelectListItem { Value = "USA", Text = "United States" },
@@ -79,7 +75,7 @@ namespace Half_Chess__Razor_Server_.Pages
             FreeIds = Enumerable.Range(1, 1000)
                     .Where(id => !allIds.Contains(id))
                     .OrderBy(_ => random.Next())
-                    .Take(10)
+                    .Take(5)
                     .Select(id => id.ToString())
                     .ToList();
         }

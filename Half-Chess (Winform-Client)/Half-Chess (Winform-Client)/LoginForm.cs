@@ -22,9 +22,12 @@ namespace Half_Chess__Winform_Client_
         public LoginForm()
         {
             InitializeComponent();
+            this.Size = new Size(800, 600); 
+            this.MinimumSize = new Size(800, 600); 
+            this.MaximumSize = new Size(1024, 768); 
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void LoginForm_Load(object sender, EventArgs e)
         {
             client.BaseAddress = new Uri(PATH);
             client.DefaultRequestHeaders.Accept.Clear();
@@ -50,10 +53,13 @@ namespace Half_Chess__Winform_Client_
                 return;
 
             string toUser = "api/TblUsers/" + signIn_textBox.Text;
-            // MessageBox.Show(PATH + toUser);
             User user = await GetUserAsync(PATH + toUser);
             if (user != null)
                 WelcomeLabel.Text = user.FirstName;
+            else
+                MessageBox.Show("Please register at our website before trying to sign in!", "User ID Does Not Exist",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
         }
     }
 }
