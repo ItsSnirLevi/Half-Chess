@@ -19,12 +19,15 @@ namespace Half_Chess__Winform_Client_
         static HttpClient client = new HttpClient();
         private const string PATH = "https://localhost:44382/";
 
+        int turnTime;
+
         public LoginForm()
         {
             InitializeComponent();
             this.Size = new Size(800, 600); 
             this.MinimumSize = new Size(800, 600); 
-            this.MaximumSize = new Size(1024, 768); 
+            this.MaximumSize = new Size(1024, 768);
+            Turn_comboBox.SelectedIndex = 1;
         }
 
         private void LoginForm_Load(object sender, EventArgs e)
@@ -55,7 +58,11 @@ namespace Half_Chess__Winform_Client_
             string toUser = "api/TblUsers/" + signIn_textBox.Text;
             User user = await GetUserAsync(PATH + toUser);
             if (user != null)
-                WelcomeLabel.Text = user.FirstName;
+            {
+                turnTime = Convert.ToInt32(Turn_comboBox.Text);
+                GameForm form = new GameForm(this);
+                form.ShowDialog();
+            }
             else
                 MessageBox.Show("Please register at our website before trying to sign in!", "User ID Does Not Exist",
                                 MessageBoxButtons.OK,
