@@ -55,7 +55,7 @@ namespace Half_Chess__Winform_Client_
             if (playerId.Length == 0)
                 return;
 
-            string toUser = "api/TblUsers/" + signIn_textBox.Text;
+            /*string toUser = "api/TblUsers/" + signIn_textBox.Text;
             User user = await GetUserAsync(PATH + toUser);
             if (user != null)
             {
@@ -66,7 +66,11 @@ namespace Half_Chess__Winform_Client_
             else
                 MessageBox.Show("Please register at our website before trying to sign in!", "User ID Does Not Exist",
                                 MessageBoxButtons.OK,
-                                MessageBoxIcon.Warning);
+                                MessageBoxIcon.Warning);*/
+
+            turnTime = Convert.ToInt32(Turn_comboBox.Text);
+            GameForm form = new GameForm(this);
+            form.ShowDialog();
         }
     }
 }
