@@ -95,7 +95,6 @@ namespace Half_Chess__Winform_Client_
                     // Highlight valid moves
                     if (validMoves.Contains(new Point(j, i)))
                     {
-
                         if (boardPieces[i, j] != null && (boardPieces[i, j].Type == "♔" || boardPieces[i, j].Type == "♚"))
                         {
                             if (isBlinking)
@@ -145,15 +144,13 @@ namespace Half_Chess__Winform_Client_
         protected override void OnMouseClick(MouseEventArgs e)
         {
             Point clickedCell = new Point((e.X - 240) / cellWidth, e.Y / cellHeight);
-
-            if (selectedPiece == null)
+            ChessPiece piece = pieces.FirstOrDefault(p => p.Position == clickedCell);
+            
+            if (selectedPiece == null || (piece != null && selectedPiece.Color == piece.Color))
             {
-                // Select a piece if it’s in the clicked cell
-                selectedPiece = pieces.FirstOrDefault(p => p.Position == clickedCell);
-
+                selectedPiece = piece;
                 if (selectedPiece != null)
                 {
-                    // Calculate valid moves and highlight them
                     validMoves = selectedPiece.CalculateValidMoves(boardPieces);
                     Invalidate();
                 }
