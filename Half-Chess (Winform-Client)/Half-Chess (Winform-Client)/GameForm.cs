@@ -18,13 +18,18 @@ namespace Half_Chess__Winform_Client_
         public static Rectangle[,] boardCells = new Rectangle[8, 4];
         private ChessPiece[,] boardPieces = new ChessPiece[8, 4];
         private List<ChessPiece> pieces = new List<ChessPiece>();
+        private List<Point> validMoves = new List<Point>();
 
-        private Timer animationTimer = new Timer();
+        private Timer checkBlinkTimer = new Timer();
+        private bool isBlinking = false;
+
+        private Timer turnTimer = new Timer();
+        private int remainingTime;
+
         private Color currentColor;
         private Bitmap canvas;
 
         private ChessPiece selectedPiece = null;
-        private Point initialMousePosition;
 
         private int cellWidth = 80;
         private int cellHeight = 80;
@@ -41,7 +46,26 @@ namespace Half_Chess__Winform_Client_
             InitializeBoard();
             InitializePieces();
 
+            checkBlinkTimer.Interval = 500;
+            checkBlinkTimer.Tick += (s, e) =>
+            {
+                isBlinking = !isBlinking;
+                Invalidate(); 
+            };
+            checkBlinkTimer.Start();
+           
             form = f;
+
+            IDLabel.Text = form.user.Id.ToString();
+            NameLabel.Text = form.user.FirstName;
+            CountryLabel.Text = form.user.Country;
+
+            remainingTime = form.turnTime;
+            TimerLabel.Text = $"{remainingTime}";
+
+            turnTimer.Interval = 1000; 
+            turnTimer.Tick += TurnTimer_Tick;
+            turnTimer.Start();
         }
 
         private void GameForm_Load(object sender, EventArgs e)
@@ -71,7 +95,18 @@ namespace Half_Chess__Winform_Client_
                     // Highlight valid moves
                     if (validMoves.Contains(new Point(j, i)))
                     {
-                        g.FillRectangle(new SolidBrush(Color.LightGreen), cell);
+
+                        if (boardPieces[i, j] != null && (boardPieces[i, j].Type == "♔" || boardPieces[i, j].Type == "♚"))
+                        {
+                            if (isBlinking)
+                                g.FillRectangle(new SolidBrush(Color.Red), cell);   
+                            else
+                                g.FillRectangle(new SolidBrush(Color.PaleVioletRed), cell);
+                        } else
+                        {
+                            g.FillRectangle(new SolidBrush(Color.LightGreen), cell);
+                        }
+                        g.DrawRectangle(new Pen(Color.Black, 1), cell);
                     } else
                     {
                         currentColor = (i + j) % 2 == 0 ? Color.AntiqueWhite : Color.DarkKhaki;
@@ -107,8 +142,6 @@ namespace Half_Chess__Winform_Client_
                 boardPieces[piece.Position.Y, piece.Position.X] = piece;  
         }
 
-        private List<Point> validMoves = new List<Point>();
-
         protected override void OnMouseClick(MouseEventArgs e)
         {
             Point clickedCell = new Point((e.X - 240) / cellWidth, e.Y / cellHeight);
@@ -131,11 +164,13 @@ namespace Half_Chess__Winform_Client_
                 if (validMoves.Contains(clickedCell))
                 {
                     // Move the piece to the new location
+                    CapturePiece(clickedCell);
                     boardPieces[selectedPiece.Position.Y, selectedPiece.Position.X] = null;
                     selectedPiece.Position = clickedCell;
                     boardPieces[selectedPiece.Position.Y, selectedPiece.Position.X] = selectedPiece;
                     selectedPiece = null;
                     validMoves.Clear();
+                    // PrintBoardPieces();
                     Invalidate();
                 }
                 else
@@ -148,6 +183,46 @@ namespace Half_Chess__Winform_Client_
             }
         }
 
+        private void CapturePiece(Point clickedCell)
+        {
+            if (boardPieces[clickedCell.Y, clickedCell.X] != null)
+            {
+                boardPieces[clickedCell.Y, clickedCell.X] = null;
+                // PrintBoardPieces();
+            }
+        }
+
+        private void TurnTimer_Tick(object sender, EventArgs e)
+        {
+            if (remainingTime > 0)
+            {
+                remainingTime--;
+                TimerLabel.Text = $"{remainingTime}";
+            }
+            else
+            {
+                turnTimer.Stop();
+                TimerLabel.Text = "Time's up!";
+            }
+        }
+
+        private void PrintBoardPieces()
+        {
+            string s = "";
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    if (boardPieces[i, j] != null)
+                        s += boardPieces[i, j].Type;
+                    else
+                        s += "♕";
+                }
+                s += "\n";
+            }
+            MessageBox.Show(s);
+        }
+
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
@@ -156,8 +231,9 @@ namespace Half_Chess__Winform_Client_
             // Draw board 
             DrawBoard(g);
             // Draw pieces
-            foreach (ChessPiece piece in pieces)
-                piece.DrawPiece(g);
+            foreach (ChessPiece piece in boardPieces)
+                if (piece != null)
+                    piece.DrawPiece(g);
 
             if (selectedPiece != null)
             {
@@ -165,7 +241,5 @@ namespace Half_Chess__Winform_Client_
                 g.DrawRectangle(new Pen(Color.Blue, 3), selectedCell);
             }
         }
-
-
     }
 }
