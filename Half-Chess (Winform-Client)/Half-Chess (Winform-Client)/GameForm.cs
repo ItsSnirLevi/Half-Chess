@@ -25,6 +25,7 @@ namespace Half_Chess__Winform_Client_
         private List<Point> validMoves = new List<Point>();
 
         private bool isMyKingInCheck = false;
+        private Point myKingBlinkPosition = Point.Empty;
         private Point myKingPosition = Point.Empty;
 
         private bool isOppKingInCheck = false;
@@ -117,7 +118,7 @@ namespace Half_Chess__Winform_Client_
                 for (int j = 0; j < 4; j++) 
                 {
                     Rectangle cell = boardCells[i, j];
-                    if ((isMyKingInCheck && myKingPosition == new Point(j, i)) || (isOppKingInCheck && oppKingPosition == new Point(j, i)))
+                    if ((isMyKingInCheck && myKingBlinkPosition == new Point(j, i)) || (isOppKingInCheck && oppKingPosition == new Point(j, i)))
                     {
                         if (isBlinking)
                             g.FillRectangle(new SolidBrush(Color.Red), cell);
@@ -165,7 +166,10 @@ namespace Half_Chess__Winform_Client_
             ChessPiece myKing = pieces.FirstOrDefault(p => p.Type == "♔" && p.PieceColor == myColor);
             ChessPiece oppKing = pieces.FirstOrDefault(p => p.Type == "♚" && p.PieceColor == oppColor);
 
-            if (myKing != null) myKingPosition = new Point(myKing.X, myKing.Y);
+            if (myKing != null) {
+                myKingPosition = new Point(myKing.X, myKing.Y);
+                myKingBlinkPosition = myKingPosition;
+            }
             if (oppKing != null) oppKingPosition = new Point(oppKing.X, oppKing.Y);
         }
 
@@ -277,6 +281,7 @@ namespace Half_Chess__Winform_Client_
             if (selectedPiece.TypeName == "King")
             {
                 myKingPosition = new Point(selectedPiece.X, selectedPiece.Y);
+                myKingBlinkPosition = myKingPosition;
             }
 
             selectedPiece = null;
