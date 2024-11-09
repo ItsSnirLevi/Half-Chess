@@ -122,7 +122,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\BoardRequest.cs" />
     <Compile Include="Models\ChessPiece.cs" />
+    <Compile Include="Models\CustomPoint.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

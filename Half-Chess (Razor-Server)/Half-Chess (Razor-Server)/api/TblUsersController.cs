@@ -21,18 +21,7 @@ namespace Half_Chess__Razor_Server_.api
             _context = context;
         }
 
-        /*[HttpPost("validateMove")]
-        public IActionResult ValidateMove([FromBody] MoveRequest moveRequest)
-        {
-            // Initialize the board or get the current game state
-            var board = GameBoard.GetCurrentBoard();
-
-            // Check if the move is valid
-            bool isValid = board.IsMoveValid(moveRequest.Piece, moveRequest.TargetPosition);
-
-            return Ok(new { isValid });
-        }*/
-
+        
         // GET: api/TblUsers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TblUsers>>> GetTblUsers()

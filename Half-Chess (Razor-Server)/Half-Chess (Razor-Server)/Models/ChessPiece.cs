@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
-namespace Half_Chess__Winform_Client_.Models
+namespace Half_Chess__Razor_Server_.Models
 {
     public class ChessPiece
     {
@@ -20,32 +18,13 @@ namespace Half_Chess__Winform_Client_.Models
             Black
         }
 
-        public string Type { get; set; } 
+        public string Type { get; set; }
         public string TypeName { get; set; }
-        public ChessColor PieceColor { get; set; } 
+        public ChessColor PieceColor { get; set; }
         public int X { get; set; }
         public int Y { get; set; }
 
-
-        public ChessPiece(string type, ChessColor color, int x, int y, string typeName)
-        {
-            Type = type;
-            PieceColor = color;
-            X = x;
-            Y = y;
-            TypeName = typeName;    
-        }
-
-        public void DrawPiece(Graphics g)
-        {
-            using (Brush brush = new SolidBrush(Color.Black))
-            {
-                Rectangle cell = GameForm.boardCells[Y, X];
-                cell.Y += 10;
-                g.DrawString(Type.Substring(0, 1), new Font("Arial", 40),
-                             brush, cell.Location);
-            }
-        }
+        public ChessPiece() { }
 
         public List<Point> CalculateValidMoves(ChessPiece[,] board)
         {
@@ -158,6 +137,5 @@ namespace Half_Chess__Winform_Client_.Models
 
             return false;
         }
-
     }
 }

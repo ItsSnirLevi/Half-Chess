@@ -16,7 +16,7 @@ namespace Half_Chess__Winform_Client_
 {
     public partial class LoginForm : Form
     {
-        static HttpClient client = new HttpClient();
+        private static readonly HttpClient client = new HttpClient();
         private const string PATH = "https://localhost:44382/";
 
         public User user;
