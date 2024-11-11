@@ -95,6 +95,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EndGameDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EndGameDialog.Designer.cs">
+      <DependentUpon>EndGameDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="GameForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -131,6 +137,9 @@
     <Compile Include="TblGames.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="EndGameDialog.resx">
+      <DependentUpon>EndGameDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GameForm.resx">
       <DependentUpon>GameForm.cs</DependentUpon>
     </EmbeddedResource>

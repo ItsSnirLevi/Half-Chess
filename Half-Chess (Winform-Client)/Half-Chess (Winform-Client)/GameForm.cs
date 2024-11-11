@@ -49,6 +49,8 @@ namespace Half_Chess__Winform_Client_
         private ChessPiece.ChessColor oppColor = ChessPiece.ChessColor.Black;
         private bool myTurn = true;
 
+        private bool gameOver = false;
+
         private static readonly HttpClient client = new HttpClient();
 
         public GameForm(LoginForm f)
@@ -58,6 +60,8 @@ namespace Half_Chess__Winform_Client_
             this.Size = new Size(800, 675);
             this.MinimumSize = new Size(800, 675);
             this.MaximumSize = new Size(800, 675);
+            this.StartPosition = FormStartPosition.CenterParent;
+
             canvas = new Bitmap(this.ClientSize.Width, this.ClientSize.Height);
 
             InitializeBoard();
@@ -172,10 +176,10 @@ namespace Half_Chess__Winform_Client_
             }
             if (oppKing != null) oppKingPosition = new Point(oppKing.X, oppKing.Y);
         }
-
+        
         protected override void OnMouseClick(MouseEventArgs e)
         {
-            if (isDrawing || !myTurn) return;
+            if (isDrawing || !myTurn || gameOver) return;
 
             Point clickedCell = new Point((e.X - 240) / cellWidth, e.Y / cellHeight);
             if (clickedCell.X < 0 || clickedCell.X >= 4 || clickedCell.Y < 0 || clickedCell.Y >= 8)
@@ -191,7 +195,7 @@ namespace Half_Chess__Winform_Client_
                 selectedPiece = piece;
                 if (selectedPiece != null)
                 {
-                    validMoves = CalculateValidMovesForCheck();
+                    validMoves = selectedPiece.CalculateValidMoves(boardPieces);
                     Invalidate();
                 }
             }
@@ -203,10 +207,30 @@ namespace Half_Chess__Winform_Client_
                     MoveTo(clickedCell);
                     isMyKingInCheck = IsKingInCheck(myColor);
                     isOppKingInCheck = IsKingInCheck(oppColor);
-                    Invalidate();
 
+                    if (isOppKingInCheck && IsCheckmate(oppColor))
+                    { 
+                        EndGame("You Win!");
+                    }
+                    else if (!isOppKingInCheck && IsStalemate(oppColor))
+                    {
+                        EndGame("Stalemate!");
+                    }
+
+                    Invalidate();
+                    
                     ChangeTurn();
-                    ServerPlay();
+                    if (!gameOver)
+                        ServerPlay();
+
+                    if (isMyKingInCheck && IsCheckmate(myColor))
+                    {
+                        EndGame("You Lose!");
+                    }
+                    else if (!isOppKingInCheck && IsStalemate(myColor))
+                    {
+                        EndGame("Stalemate!");
+                    }
                 }
                 else
                 {
@@ -217,16 +241,6 @@ namespace Half_Chess__Winform_Client_
                 }
             }
         }
-
-        private List<Point> CalculateValidMovesForCheck()
-        {
-            List<Point> tmp = selectedPiece.CalculateValidMoves(boardPieces);
-
-            tmp = FilterMovesThatResolveCheck(tmp, selectedPiece);
-
-            return tmp;
-        }
-
 
         private List<Point> FilterMovesThatResolveCheck(List<Point> potentialMoves, ChessPiece piece)
         {
@@ -243,9 +257,12 @@ namespace Half_Chess__Winform_Client_
                 piece.Y = move.Y;
                 boardPieces[move.Y, move.X] = piece;
 
-                if (selectedPiece.TypeName == "King")
+                if (piece.TypeName == "King")
                 {
-                    myKingPosition = new Point(piece.X, piece.Y);
+                    if (piece.PieceColor == myColor)
+                        myKingPosition = new Point(piece.X, piece.Y);
+                    else
+                        oppKingPosition = new Point(piece.X, piece.Y);
                 }
 
                 bool isKingInCheckAfterMove = IsKingInCheck(piece.PieceColor);
@@ -256,9 +273,12 @@ namespace Half_Chess__Winform_Client_
                 piece.X = originalPosition.X;
                 piece.Y = originalPosition.Y;
 
-                if (selectedPiece.TypeName == "King")
+                if (piece.TypeName == "King")
                 {
-                    myKingPosition = new Point(piece.X, piece.Y);
+                    if (piece.PieceColor == myColor)
+                        myKingPosition = new Point(piece.X, piece.Y);
+                    else
+                        oppKingPosition = new Point(piece.X, piece.Y);
                 }
 
                 if (!isKingInCheckAfterMove)
@@ -311,6 +331,33 @@ namespace Half_Chess__Winform_Client_
             remainingTime = form.turnTime;
         }
 
+        private void EndGame(string msg)
+        {
+            gameOver = true;
+            turnTimer.Stop();
+            remainingTime = form.turnTime;
+
+            using (EndGameDialog endGameDialog = new EndGameDialog(msg))
+            {
+                DialogResult result = endGameDialog.ShowDialog();
+                if (result == DialogResult.Yes)
+                {
+                    StartNewGame();  // Start a new game
+                }
+                else if (result == DialogResult.No)
+                {
+                    this.Close(); 
+                }
+            }
+        }
+
+        private void StartNewGame()
+        {
+            this.Dispose();
+            GameForm newGameForm = new GameForm(form);
+            newGameForm.Show();
+        }
+
         private async void ServerPlay()
         {
             List<CustomPoint> move = await GetMovesAsync("");
@@ -341,7 +388,9 @@ namespace Half_Chess__Winform_Client_
             var request = new BoardRequest
             {
                 PieceColor = (myColor == ChessPiece.ChessColor.White) ? BoardRequest.ChessColor.Black : BoardRequest.ChessColor.White,
-                Board = boardList
+                Board = boardList,
+                KingPositionX = oppKingPosition.X,
+                KingPositionY = oppKingPosition.Y
             };
 
             // Send the request to the server
@@ -361,7 +410,7 @@ namespace Half_Chess__Winform_Client_
                 // Check if any opponent's piece can move to the king's position
                 foreach (ChessPiece piece in boardPieces)
                 {
-                    if (piece != null && piece.PieceColor != kingColor)
+                    if (piece != null && piece.PieceColor != kingColor && piece.TypeName != "King")
                     {
                         List<Point> moves = piece.CalculateValidMoves(boardPieces);
                         if (moves.Contains(myKingPosition))
@@ -374,7 +423,7 @@ namespace Half_Chess__Winform_Client_
                 // Check if any opponent's piece can move to the king's position
                 foreach (ChessPiece piece in boardPieces)
                 {
-                    if (piece != null && piece.PieceColor != kingColor)
+                    if (piece != null && piece.PieceColor != kingColor && piece.TypeName != "King")
                     {
                         List<Point> moves = piece.CalculateValidMoves(boardPieces);
                         if (moves.Contains(oppKingPosition))
@@ -384,6 +433,42 @@ namespace Half_Chess__Winform_Client_
                 return false;
             }
             
+        }
+
+        private bool IsStalemate(ChessPiece.ChessColor playerColor)
+        {
+            foreach (ChessPiece piece in boardPieces)
+            {
+                if (piece != null && piece.PieceColor == playerColor)
+                {
+                    List<Point> potentialMoves = piece.CalculateValidMoves(boardPieces);
+                    /*if (piece.TypeName == "King")
+                        potentialMoves = FilterMovesThatResolveCheck(potentialMoves, piece);*/
+                    // If the piece has at least one valid move, it's not stalemate
+                    if (potentialMoves.Count > 0)
+                        return false;
+                }
+            }
+
+            return true;
+        }
+
+        private bool IsCheckmate(ChessPiece.ChessColor kingColor)
+        {
+            foreach (ChessPiece piece in boardPieces)
+            {
+                if (piece != null && piece.PieceColor == kingColor)
+                {
+                    List<Point> potentialMoves = piece.CalculateValidMoves(boardPieces);
+                    List<Point> validMoves = FilterMovesThatResolveCheck(potentialMoves, piece);
+
+                    // If there's at least one valid move, it's not checkmate
+                    if (validMoves.Count > 0)
+                        return false;
+                }
+            }
+
+            return true;
         }
 
         private void CapturePiece(int X, int Y)
@@ -404,8 +489,10 @@ namespace Half_Chess__Winform_Client_
             }
             else
             {
-                turnTimer.Stop();
-                TimerLabel.Text = "Time's up!";
+                TimerLabel.Text = "Time's Up!";
+
+                string msg = myTurn ? "You Lost" : "You Win";
+                EndGame(msg);
             }
         }
 
@@ -486,5 +573,6 @@ namespace Half_Chess__Winform_Client_
                 g.DrawRectangle(new Pen(Color.Blue, 3), selectedCell);
             }
         }
+
     }
 }

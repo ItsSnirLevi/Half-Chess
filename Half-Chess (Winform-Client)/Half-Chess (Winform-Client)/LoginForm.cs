@@ -62,7 +62,7 @@ namespace Half_Chess__Winform_Client_
             {
                 turnTime = Convert.ToInt32(Turn_comboBox.Text);
                 GameForm form = new GameForm(this);
-                form.ShowDialog();
+                form.Show();
             }
             else
                 MessageBox.Show("Please register at our website before trying to sign in!", "User ID Does Not Exist",

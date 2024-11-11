@@ -24,12 +24,14 @@ namespace Half_Chess__Razor_Server_.api
                 }
             }
 
-            List<CustomPoint> validMoves = GetRandomMove(board, request.PieceColor);
+            List<CustomPoint> validMoves = GetRandomMove(board, request.PieceColor, request.KingPositionX, request.KingPositionY);
             return Ok(validMoves);
         }
 
-        public List<CustomPoint> GetRandomMove(ChessPiece[,] board, BoardRequest.ChessColor pieceColor)
+        public List<CustomPoint> GetRandomMove(ChessPiece[,] board, BoardRequest.ChessColor pieceColor, int kingX, int kingY)
         {
+            CustomPoint kingPos = new CustomPoint { X = kingX, Y = kingY };
+
             ChessPiece.ChessColor color = (pieceColor == BoardRequest.ChessColor.White) ? ChessPiece.ChessColor.White : ChessPiece.ChessColor.Black;
             Random random = new Random();
             List<ChessPiece> piecesOfColor = new List<ChessPiece>();
@@ -57,7 +59,8 @@ namespace Half_Chess__Razor_Server_.api
             // Loop through shuffled pieces until we find one with valid moves
             foreach (var selectedPiece in piecesOfColor)
             {
-                List<Point> validMoves = selectedPiece.CalculateValidMoves(board);
+                List<Point> validMoves = selectedPiece.CalculateValidMoves(board); // selectedPiece.CalculateValidMoves(board); 
+                validMoves = FilterMovesThatResolveCheck(validMoves, selectedPiece, board, pieceColor, kingPos);
 
                 if (validMoves.Count > 0)
                 {
@@ -73,6 +76,64 @@ namespace Half_Chess__Razor_Server_.api
 
             // If no valid moves are found for any piece, return null
             return null;
+        }
+
+        private List<Point> FilterMovesThatResolveCheck(List<Point> potentialMoves, ChessPiece piece, ChessPiece[,] board, BoardRequest.ChessColor pieceColor, CustomPoint kingPos)
+        {
+            List<Point> validMoves = new List<Point>();
+
+            foreach (Point move in potentialMoves)
+            {
+                ChessPiece originalPieceAtTarget = board[move.Y, move.X];
+                Point originalPosition = new Point(piece.X, piece.Y);
+
+                // Move piece temporarily
+                board[piece.Y, piece.X] = null;
+                piece.X = move.X;
+                piece.Y = move.Y;
+                board[move.Y, move.X] = piece;
+
+                if (piece.TypeName == "King")
+                {
+                    kingPos = new CustomPoint { X = piece.X, Y = piece.Y };
+                }
+
+                bool isKingInCheckAfterMove = IsKingInCheck(board, piece.PieceColor, kingPos);
+
+                // Revert the move
+                board[move.Y, move.X] = originalPieceAtTarget;
+                board[originalPosition.Y, originalPosition.X] = piece;
+                piece.X = originalPosition.X;
+                piece.Y = originalPosition.Y;
+
+                if (piece.TypeName == "King")
+                {
+                    kingPos = new CustomPoint { X = piece.X, Y = piece.Y };
+                }
+
+                if (!isKingInCheckAfterMove)
+                {
+                    validMoves.Add(move);
+                }
+            }
+
+            return validMoves;
+        }
+
+        private bool IsKingInCheck(ChessPiece[,] board, ChessPiece.ChessColor kingColor, CustomPoint kingPos)
+        {
+            Point kingPosition = new Point(kingPos.X, kingPos.Y);
+            // Check if any opponent's piece can move to the king's position
+            foreach (ChessPiece piece in board)
+            {
+                if (piece != null && piece.PieceColor != kingColor)
+                {
+                    List<Point> moves = piece.CalculateValidMoves(board);
+                    if (moves.Contains(kingPosition))
+                        return true;
+                }
+            }
+            return false;
         }
 
         [HttpGet("test-connection")]

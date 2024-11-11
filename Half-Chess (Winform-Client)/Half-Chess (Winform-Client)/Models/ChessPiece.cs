@@ -104,17 +104,8 @@ namespace Half_Chess__Winform_Client_.Models
             }
             else if (Type == "♔" || Type == "♚")
             {
-                Point[] kingMoves = {
-                                    new Point(1, 0), new Point(-1, 0), new Point(0, 1), new Point(0, -1),
-                                    new Point(1, 1), new Point(1, -1), new Point(-1, 1), new Point(-1, -1)
-                                    };
-
-                foreach (var move in kingMoves)
-                {
-                    Point kingMove = new Point(X + move.X, Y + move.Y);
-                    if (IsValidMove(kingMove, board, out bool canCapture))
-                        validMoves.Add(kingMove);
-                }
+                List<Point> potentialMoves = GetKingMoves(board);
+                validMoves = FilterMovesThatPreventCheck(board, potentialMoves);
             }
             return validMoves;
         }
@@ -156,6 +147,84 @@ namespace Half_Chess__Winform_Client_.Models
                 return true;
             }
 
+            return false;
+        }
+
+        public List<Point> FilterMovesThatPreventCheck(ChessPiece[,] board, List<Point> potentialMoves)
+        {
+            List<Point> safeMoves = new List<Point>();
+            Point kingPosition = new Point(X, Y);
+
+            // Iterate over all potential moves and keep only those that do not result in the king being in check
+            foreach (Point move in potentialMoves)
+            {
+                // Save the current state
+                ChessPiece originalPieceAtTarget = board[move.Y, move.X];
+                Point originalPosition = new Point(this.X, this.Y);
+
+                // Move the king temporarily
+                board[this.Y, this.X] = null;
+                this.X = move.X;
+                this.Y = move.Y;
+                board[move.Y, move.X] = this;
+
+                // Check if the move would result in the king being in check
+                bool isKingInCheckAfterMove = IsKingInCheck(board);
+
+                // Revert the move
+                board[move.Y, move.X] = originalPieceAtTarget;
+                board[originalPosition.Y, originalPosition.X] = this;
+                this.X = originalPosition.X;
+                this.Y = originalPosition.Y;
+
+                // If the king is not in check, add the move to the list of safe moves
+                if (!isKingInCheckAfterMove)
+                {
+                    safeMoves.Add(move);
+                }
+            }
+
+            return safeMoves;
+        }
+
+        private List<Point> GetKingMoves(ChessPiece[,] board)
+        {
+            Point[] kingMoves = {
+                                    new Point(1, 0), new Point(-1, 0), new Point(0, 1), new Point(0, -1),
+                                    new Point(1, 1), new Point(1, -1), new Point(-1, 1), new Point(-1, -1)
+                                    };
+            List<Point> potentialMoves = new List<Point>();
+
+            foreach (var move in kingMoves)
+            {
+                Point kingMove = new Point(X + move.X, Y + move.Y);
+                if (IsValidMove(kingMove, board, out bool canCapture))
+                    potentialMoves.Add(kingMove);
+            }
+            return potentialMoves;
+        }
+
+        private bool IsKingInCheck(ChessPiece[,] board)
+        {
+            Point kingPosition = new Point(X, Y);
+            // Check if any opponent's piece can move to the king's position
+            foreach (ChessPiece piece in board)
+            {
+                if (piece != null)
+                {
+                    if (piece.PieceColor != PieceColor && piece.TypeName == "King")
+                    {
+                        List<Point> moves = piece.GetKingMoves(board);
+                        if (moves.Contains(kingPosition))
+                            return true;
+                    } else if (piece.PieceColor != PieceColor)
+                    {
+                        List<Point> moves = piece.CalculateValidMoves(board);
+                        if (moves.Contains(kingPosition))
+                            return true;
+                    }
+                }
+            }
             return false;
         }
 

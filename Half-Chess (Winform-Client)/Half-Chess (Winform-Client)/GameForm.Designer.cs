@@ -28,13 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GameForm));
             this.IDLabel = new System.Windows.Forms.Label();
             this.TimerLabel = new System.Windows.Forms.Label();
             this.NameLabel = new System.Windows.Forms.Label();
             this.CountryLabel = new System.Windows.Forms.Label();
             this.drawBtn = new System.Windows.Forms.Button();
             this.clearBtn = new System.Windows.Forms.Button();
-            this.test_btn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // IDLabel
@@ -97,30 +97,21 @@
             this.clearBtn.Text = "Clear";
             this.clearBtn.UseVisualStyleBackColor = true;
             // 
-            // test_btn
-            // 
-            this.test_btn.Location = new System.Drawing.Point(23, 351);
-            this.test_btn.Name = "test_btn";
-            this.test_btn.Size = new System.Drawing.Size(75, 23);
-            this.test_btn.TabIndex = 6;
-            this.test_btn.Text = "button1";
-            this.test_btn.UseVisualStyleBackColor = true;
-            // 
             // GameForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1045, 783);
-            this.Controls.Add(this.test_btn);
             this.Controls.Add(this.clearBtn);
             this.Controls.Add(this.drawBtn);
             this.Controls.Add(this.CountryLabel);
             this.Controls.Add(this.NameLabel);
             this.Controls.Add(this.TimerLabel);
             this.Controls.Add(this.IDLabel);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "GameForm";
-            this.Text = "GameForm";
+            this.Text = "Half Chess";
             this.Load += new System.EventHandler(this.GameForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -135,6 +126,5 @@
         private System.Windows.Forms.Label CountryLabel;
         private System.Windows.Forms.Button drawBtn;
         private System.Windows.Forms.Button clearBtn;
-        private System.Windows.Forms.Button test_btn;
     }
 }

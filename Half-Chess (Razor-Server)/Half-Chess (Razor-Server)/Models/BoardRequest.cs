@@ -12,5 +12,8 @@ namespace Half_Chess__Razor_Server_.Models
 
         public ChessColor PieceColor { get; set; }
         public List<ChessPiece> Board { get; set; }
+
+        public int KingPositionX { get; set; }
+        public int KingPositionY { get; set; }
     }
 }
