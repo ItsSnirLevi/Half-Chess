@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -45,13 +46,15 @@ namespace Half_Chess__Winform_Client_
         private Bitmap canvas;
         private Point lastPoint = Point.Empty;
 
-        private ChessPiece.ChessColor myColor = ChessPiece.ChessColor.White;
-        private ChessPiece.ChessColor oppColor = ChessPiece.ChessColor.Black;
-        private bool myTurn = true;
+        private ChessPiece.ChessColor myColor;
+        private ChessPiece.ChessColor oppColor;
+        private bool myTurn;
 
         private bool gameOver = false;
 
         private static readonly HttpClient client = new HttpClient();
+
+        private const string PATH = "https://localhost:44382/";
 
         public GameForm(LoginForm f)
         {
@@ -62,7 +65,32 @@ namespace Half_Chess__Winform_Client_
             this.MaximumSize = new Size(800, 675);
             this.StartPosition = FormStartPosition.CenterParent;
 
-            canvas = new Bitmap(this.ClientSize.Width, this.ClientSize.Height);
+            form = f;
+
+            IDLabel.Text = form.user.Id.ToString();
+            NameLabel.Text = form.user.FirstName;
+            CountryLabel.Text = form.user.Country;
+
+            remainingTime = form.turnTime;
+            TimerLabel.Text = "Timer";
+
+            turnTimer.Interval = 1000;
+            turnTimer.Tick += TurnTimer_Tick;
+            turnTimer.Start();
+
+
+            if (form.isWhite)
+            {
+                myColor = ChessPiece.ChessColor.White;
+                oppColor = ChessPiece.ChessColor.Black;
+                myTurn = true;
+            }
+            else
+            {
+                myColor = ChessPiece.ChessColor.Black;
+                oppColor = ChessPiece.ChessColor.White;
+                myTurn = false;
+            }
 
             InitializeBoard();
             InitializePieces();
@@ -85,18 +113,10 @@ namespace Half_Chess__Winform_Client_
             clearBtn.Click += (s, e) => ClearDrawing();
             clearBtn.Enabled = false;
 
-            form = f;
+            if (!form.isWhite)
+                ServerPlay();
 
-            IDLabel.Text = form.user.Id.ToString();
-            NameLabel.Text = form.user.FirstName;
-            CountryLabel.Text = form.user.Country;
-
-            remainingTime = form.turnTime;
-            TimerLabel.Text = "Timer";
-
-            turnTimer.Interval = 1000; 
-            turnTimer.Tick += TurnTimer_Tick;
-            turnTimer.Start();
+            this.FormClosing += GameForm_FormClosing;
         }
 
         private void GameForm_Load(object sender, EventArgs e)
@@ -144,37 +164,75 @@ namespace Half_Chess__Winform_Client_
 
         private void InitializePieces()
         {
-            pieces.Add(new ChessPiece("♔", ChessPiece.ChessColor.White, 0, 7, "King"));
-            pieces.Add(new ChessPiece("♖", ChessPiece.ChessColor.White, 3, 7, "Rook"));
-            pieces.Add(new ChessPiece("♘", ChessPiece.ChessColor.White, 2, 7, "Knight"));
-            pieces.Add(new ChessPiece("♗", ChessPiece.ChessColor.White, 1, 7, "Bishop"));
-
-            for (int i = 0; i < 4; i++)
+            if (myColor == ChessPiece.ChessColor.White)
             {
-                pieces.Add(new ChessPiece("♙", ChessPiece.ChessColor.White, i, 6, "Pawn"));
-            }
+                pieces.Add(new ChessPiece("♔", ChessPiece.ChessColor.White, 0, 7, "King"));
+                pieces.Add(new ChessPiece("♖", ChessPiece.ChessColor.White, 3, 7, "Rook"));
+                pieces.Add(new ChessPiece("♘", ChessPiece.ChessColor.White, 2, 7, "Knight"));
+                pieces.Add(new ChessPiece("♗", ChessPiece.ChessColor.White, 1, 7, "Bishop"));
 
-            pieces.Add(new ChessPiece("♚", ChessPiece.ChessColor.Black, 0, 0, "King"));
-            pieces.Add(new ChessPiece("♜", ChessPiece.ChessColor.Black, 3, 0, "Rook"));
-            pieces.Add(new ChessPiece("♞", ChessPiece.ChessColor.Black, 2, 0, "Knight"));
-            pieces.Add(new ChessPiece("♝", ChessPiece.ChessColor.Black, 1, 0, "Bishop"));
-            
-            for (int i = 0; i < 4; i++)
+                for (int i = 0; i < 4; i++)
+                {
+                    pieces.Add(new ChessPiece("♙", ChessPiece.ChessColor.White, i, 6, "Pawn"));
+                }
+
+                pieces.Add(new ChessPiece("♚", ChessPiece.ChessColor.Black, 0, 0, "King"));
+                pieces.Add(new ChessPiece("♜", ChessPiece.ChessColor.Black, 3, 0, "Rook"));
+                pieces.Add(new ChessPiece("♞", ChessPiece.ChessColor.Black, 2, 0, "Knight"));
+                pieces.Add(new ChessPiece("♝", ChessPiece.ChessColor.Black, 1, 0, "Bishop"));
+
+                for (int i = 0; i < 4; i++)
+                {
+                    pieces.Add(new ChessPiece("♟", ChessPiece.ChessColor.Black, i, 1, "Pawn"));
+                }
+
+                foreach (ChessPiece piece in pieces)
+                    boardPieces[piece.Y, piece.X] = piece;
+
+                ChessPiece myKing = pieces.FirstOrDefault(p => p.TypeName == "King" && p.PieceColor == myColor);
+                ChessPiece oppKing = pieces.FirstOrDefault(p => p.TypeName == "King" && p.PieceColor == oppColor);
+
+                if (myKing != null)
+                {
+                    myKingPosition = new Point(myKing.X, myKing.Y);
+                    myKingBlinkPosition = myKingPosition;
+                }
+                if (oppKing != null) oppKingPosition = new Point(oppKing.X, oppKing.Y);
+            } else
             {
-                pieces.Add(new ChessPiece("♟", ChessPiece.ChessColor.Black, i, 1, "Pawn"));
+                pieces.Add(new ChessPiece("♔", ChessPiece.ChessColor.White, 3, 0, "King"));
+                pieces.Add(new ChessPiece("♖", ChessPiece.ChessColor.White, 0, 0, "Rook"));
+                pieces.Add(new ChessPiece("♘", ChessPiece.ChessColor.White, 1, 0, "Knight"));
+                pieces.Add(new ChessPiece("♗", ChessPiece.ChessColor.White, 2, 0, "Bishop"));
+
+                for (int i = 0; i < 4; i++)
+                {
+                    pieces.Add(new ChessPiece("♙", ChessPiece.ChessColor.White, i, 1, "Pawn"));
+                }
+
+                pieces.Add(new ChessPiece("♚", ChessPiece.ChessColor.Black, 3, 7, "King"));
+                pieces.Add(new ChessPiece("♜", ChessPiece.ChessColor.Black, 0, 7, "Rook"));
+                pieces.Add(new ChessPiece("♞", ChessPiece.ChessColor.Black, 1, 7, "Knight"));
+                pieces.Add(new ChessPiece("♝", ChessPiece.ChessColor.Black, 2, 7, "Bishop"));
+
+                for (int i = 0; i < 4; i++)
+                {
+                    pieces.Add(new ChessPiece("♟", ChessPiece.ChessColor.Black, i, 6, "Pawn"));
+                }
+
+                foreach (ChessPiece piece in pieces)
+                    boardPieces[piece.Y, piece.X] = piece;
+
+                ChessPiece myKing = pieces.FirstOrDefault(p => p.TypeName == "King" && p.PieceColor == myColor);
+                ChessPiece oppKing = pieces.FirstOrDefault(p => p.TypeName == "King" && p.PieceColor == oppColor);
+
+                if (myKing != null)
+                {
+                    myKingPosition = new Point(myKing.X, myKing.Y);
+                    myKingBlinkPosition = myKingPosition;
+                }
+                if (oppKing != null) oppKingPosition = new Point(oppKing.X, oppKing.Y);
             }
-
-            foreach (ChessPiece piece in pieces)
-                boardPieces[piece.Y, piece.X] = piece;
-
-            ChessPiece myKing = pieces.FirstOrDefault(p => p.Type == "♔" && p.PieceColor == myColor);
-            ChessPiece oppKing = pieces.FirstOrDefault(p => p.Type == "♚" && p.PieceColor == oppColor);
-
-            if (myKing != null) {
-                myKingPosition = new Point(myKing.X, myKing.Y);
-                myKingBlinkPosition = myKingPosition;
-            }
-            if (oppKing != null) oppKingPosition = new Point(oppKing.X, oppKing.Y);
         }
         
         protected override void OnMouseClick(MouseEventArgs e)
@@ -195,7 +253,9 @@ namespace Half_Chess__Winform_Client_
                 selectedPiece = piece;
                 if (selectedPiece != null)
                 {
-                    validMoves = selectedPiece.CalculateValidMoves(boardPieces);
+                    validMoves = selectedPiece.CalculateValidMoves(boardPieces, true);
+                    if (selectedPiece.TypeName != "King")
+                        validMoves = FilterMovesThatResolveCheck(validMoves, selectedPiece);
                     Invalidate();
                 }
             }
@@ -360,7 +420,7 @@ namespace Half_Chess__Winform_Client_
 
         private async void ServerPlay()
         {
-            List<CustomPoint> move = await GetMovesAsync("");
+            List<CustomPoint> move = await GetMovesAsync(PATH + "api/ChessGame");
             ServerMoveTo(move[0], move[1]);
             isMyKingInCheck = IsKingInCheck(myColor);
             isOppKingInCheck = IsKingInCheck(oppColor);
@@ -394,7 +454,7 @@ namespace Half_Chess__Winform_Client_
             };
 
             // Send the request to the server
-            HttpResponseMessage response = await client.PostAsJsonAsync("https://localhost:44382/api/ChessGame", request);
+            HttpResponseMessage response = await client.PostAsJsonAsync(url, request);
             if (response.IsSuccessStatusCode)
             {
                 move = await response.Content.ReadAsAsync<List<CustomPoint>>(); // Read the response content as List<Point>
@@ -412,7 +472,7 @@ namespace Half_Chess__Winform_Client_
                 {
                     if (piece != null && piece.PieceColor != kingColor && piece.TypeName != "King")
                     {
-                        List<Point> moves = piece.CalculateValidMoves(boardPieces);
+                        List<Point> moves = piece.CalculateValidMoves(boardPieces, false);
                         if (moves.Contains(myKingPosition))
                             return true;
                     }
@@ -425,7 +485,7 @@ namespace Half_Chess__Winform_Client_
                 {
                     if (piece != null && piece.PieceColor != kingColor && piece.TypeName != "King")
                     {
-                        List<Point> moves = piece.CalculateValidMoves(boardPieces);
+                        List<Point> moves = piece.CalculateValidMoves(boardPieces, true);
                         if (moves.Contains(oppKingPosition))
                             return true;
                     }
@@ -437,13 +497,14 @@ namespace Half_Chess__Winform_Client_
 
         private bool IsStalemate(ChessPiece.ChessColor playerColor)
         {
+            bool isClient = playerColor == myColor;
+
             foreach (ChessPiece piece in boardPieces)
             {
                 if (piece != null && piece.PieceColor == playerColor)
                 {
-                    List<Point> potentialMoves = piece.CalculateValidMoves(boardPieces);
-                    /*if (piece.TypeName == "King")
-                        potentialMoves = FilterMovesThatResolveCheck(potentialMoves, piece);*/
+                    List<Point> potentialMoves = piece.CalculateValidMoves(boardPieces, isClient);
+
                     // If the piece has at least one valid move, it's not stalemate
                     if (potentialMoves.Count > 0)
                         return false;
@@ -455,12 +516,15 @@ namespace Half_Chess__Winform_Client_
 
         private bool IsCheckmate(ChessPiece.ChessColor kingColor)
         {
+            bool isPlayer = kingColor == myColor;
+
             foreach (ChessPiece piece in boardPieces)
             {
                 if (piece != null && piece.PieceColor == kingColor)
                 {
-                    List<Point> potentialMoves = piece.CalculateValidMoves(boardPieces);
-                    List<Point> validMoves = FilterMovesThatResolveCheck(potentialMoves, piece);
+                    List<Point> validMoves = piece.CalculateValidMoves(boardPieces, isPlayer);
+                    if (piece.TypeName != "King")
+                        validMoves = FilterMovesThatResolveCheck(validMoves, piece);
 
                     // If there's at least one valid move, it's not checkmate
                     if (validMoves.Count > 0)
@@ -574,5 +638,10 @@ namespace Half_Chess__Winform_Client_
             }
         }
 
+        private void GameForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            turnTimer.Stop();
+            checkBlinkTimer.Stop();
+        }
     }
 }

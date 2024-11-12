@@ -21,7 +21,7 @@ namespace Half_Chess__Winform_Client_
 
         public User user;
         public int turnTime;
-
+        public bool isWhite = true;
         public LoginForm()
         {
             InitializeComponent();
@@ -50,6 +50,12 @@ namespace Half_Chess__Winform_Client_
             return user;
         }
 
+        async Task<bool> UpdateLastPlayedAsync(string path, int userId, DateTime? lastPlayed)
+        {
+            HttpResponseMessage response = await client.PutAsJsonAsync(path + $"api/TblUsers/{userId}/lastplayed", lastPlayed);
+            return response.IsSuccessStatusCode;
+        }
+
         private async void signIn_button_Click(object sender, EventArgs e)
         {
             string playerId = signIn_textBox.Text;
@@ -60,6 +66,8 @@ namespace Half_Chess__Winform_Client_
             user = await GetUserAsync(PATH + toUser);
             if (user != null)
             {
+                user.LastPlayed = DateTime.Now;
+                await UpdateLastPlayedAsync(PATH, user.Id, user.LastPlayed);
                 turnTime = Convert.ToInt32(Turn_comboBox.Text);
                 GameForm form = new GameForm(this);
                 form.Show();
@@ -68,10 +76,16 @@ namespace Half_Chess__Winform_Client_
                 MessageBox.Show("Please register at our website before trying to sign in!", "User ID Does Not Exist",
                                 MessageBoxButtons.OK,
                                 MessageBoxIcon.Warning);
+        }
 
-            /*turnTime = Convert.ToInt32(Turn_comboBox.Text);
-            GameForm form = new GameForm(this);
-            form.ShowDialog();*/
+        private void WhiteRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            isWhite = true;
+        }
+
+        private void BlackRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            isWhite = false;
         }
     }
 }

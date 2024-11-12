@@ -52,16 +52,17 @@ namespace Half_Chess__Razor_Server_.api
         }
 
         // PUT: api/TblUsers/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutTblUsers(int id, TblUsers tblUsers)
+        [HttpPut("{id}/lastplayed")]
+        public async Task<IActionResult> UpdateLastPlayed(int id, [FromBody] DateTime lastPlayed)
         {
-            if (id != tblUsers.Id)
+            var existingUser = await _context.TblUsers.FindAsync(id);
+            if (existingUser == null)
             {
-                return BadRequest();
+                return NotFound();
             }
 
-            _context.Entry(tblUsers).State = EntityState.Modified;
+            // Update only the LastPlayed field
+            existingUser.LastPlayed = lastPlayed;
 
             try
             {
@@ -83,7 +84,6 @@ namespace Half_Chess__Razor_Server_.api
         }
 
         // POST: api/TblUsers
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<TblUsers>> PostTblUsers(TblUsers tblUsers)
         {

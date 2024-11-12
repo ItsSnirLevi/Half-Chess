@@ -37,8 +37,8 @@ namespace Half_Chess__Razor_Server_.api
             List<ChessPiece> piecesOfColor = new List<ChessPiece>();
 
             // Add a random delay between 1 and 3 seconds
-            //int delay = random.Next(1, 4);
-            //Thread.Sleep(delay * 1000);
+            int delay = random.Next(1, 4);
+            Thread.Sleep(delay * 1000);
 
             for (int y = 0; y < 8; y++)
             {
@@ -59,7 +59,7 @@ namespace Half_Chess__Razor_Server_.api
             // Loop through shuffled pieces until we find one with valid moves
             foreach (var selectedPiece in piecesOfColor)
             {
-                List<Point> validMoves = selectedPiece.CalculateValidMoves(board); // selectedPiece.CalculateValidMoves(board); 
+                List<Point> validMoves = selectedPiece.CalculateValidMoves(board, true); // selectedPiece.CalculateValidMoves(board); 
                 validMoves = FilterMovesThatResolveCheck(validMoves, selectedPiece, board, pieceColor, kingPos);
 
                 if (validMoves.Count > 0)
@@ -128,20 +128,12 @@ namespace Half_Chess__Razor_Server_.api
             {
                 if (piece != null && piece.PieceColor != kingColor)
                 {
-                    List<Point> moves = piece.CalculateValidMoves(board);
+                    List<Point> moves = piece.CalculateValidMoves(board, false);
                     if (moves.Contains(kingPosition))
                         return true;
                 }
             }
             return false;
         }
-
-        [HttpGet("test-connection")]
-        public IActionResult TestConnection()
-        {
-            return Ok("Connection successful!");
-        }
-
-
     }
 }

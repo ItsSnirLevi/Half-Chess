@@ -39,6 +39,11 @@
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.Turn_comboBox = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.WhiteRadioButton = new System.Windows.Forms.RadioButton();
+            this.BlackRadioButton = new System.Windows.Forms.RadioButton();
+            this.label5 = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // WelcomeLabel
@@ -114,7 +119,7 @@
             "40 ",
             "50",
             "60"});
-            this.Turn_comboBox.Location = new System.Drawing.Point(823, 372);
+            this.Turn_comboBox.Location = new System.Drawing.Point(823, 345);
             this.Turn_comboBox.Name = "Turn_comboBox";
             this.Turn_comboBox.Size = new System.Drawing.Size(140, 24);
             this.Turn_comboBox.TabIndex = 7;
@@ -123,11 +128,57 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Rockwell Nova Cond", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(817, 333);
+            this.label4.Location = new System.Drawing.Point(817, 306);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(161, 31);
             this.label4.TabIndex = 8;
             this.label4.Text = "Turn time in seconds";
+            // 
+            // WhiteRadioButton
+            // 
+            this.WhiteRadioButton.AutoSize = true;
+            this.WhiteRadioButton.Checked = true;
+            this.WhiteRadioButton.Font = new System.Drawing.Font("Rockwell Nova Cond", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.WhiteRadioButton.Location = new System.Drawing.Point(6, 21);
+            this.WhiteRadioButton.Name = "WhiteRadioButton";
+            this.WhiteRadioButton.Size = new System.Drawing.Size(63, 28);
+            this.WhiteRadioButton.TabIndex = 9;
+            this.WhiteRadioButton.TabStop = true;
+            this.WhiteRadioButton.Text = "White";
+            this.WhiteRadioButton.UseVisualStyleBackColor = true;
+            this.WhiteRadioButton.CheckedChanged += new System.EventHandler(this.WhiteRadioButton_CheckedChanged);
+            // 
+            // BlackRadioButton
+            // 
+            this.BlackRadioButton.AutoSize = true;
+            this.BlackRadioButton.Font = new System.Drawing.Font("Rockwell Nova Cond", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BlackRadioButton.Location = new System.Drawing.Point(6, 47);
+            this.BlackRadioButton.Name = "BlackRadioButton";
+            this.BlackRadioButton.Size = new System.Drawing.Size(63, 28);
+            this.BlackRadioButton.TabIndex = 10;
+            this.BlackRadioButton.Text = "Black";
+            this.BlackRadioButton.UseVisualStyleBackColor = true;
+            this.BlackRadioButton.CheckedChanged += new System.EventHandler(this.BlackRadioButton_CheckedChanged);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Rockwell Nova Cond", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(817, 404);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(113, 31);
+            this.label5.TabIndex = 11;
+            this.label5.Text = "Choose Pieces";
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.WhiteRadioButton);
+            this.groupBox1.Controls.Add(this.BlackRadioButton);
+            this.groupBox1.Location = new System.Drawing.Point(823, 438);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(153, 88);
+            this.groupBox1.TabIndex = 12;
+            this.groupBox1.TabStop = false;
             // 
             // LoginForm
             // 
@@ -135,6 +186,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1045, 690);
+            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.Turn_comboBox);
             this.Controls.Add(this.label1);
@@ -148,6 +201,8 @@
             this.Name = "LoginForm";
             this.Text = "Half Chess  ";
             this.Load += new System.EventHandler(this.LoginForm_Load);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -164,6 +219,10 @@
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.ComboBox Turn_comboBox;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.RadioButton WhiteRadioButton;
+        private System.Windows.Forms.RadioButton BlackRadioButton;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.GroupBox groupBox1;
     }
 }
 

@@ -47,15 +47,28 @@ namespace Half_Chess__Winform_Client_.Models
             }
         }
 
-        public List<Point> CalculateValidMoves(ChessPiece[,] board)
+        public List<Point> CalculateValidMoves(ChessPiece[,] board, bool isClient)
         {
             List<Point> validMoves = new List<Point>();
 
-            if (Type == "♙" || Type == "♟")
+            if (TypeName == "Pawn")
             {
-                int direction = PieceColor == ChessColor.White ? -1 : 1;
+                int direction = isClient ? -1 : 1;
+                bool canCapture;
+                if (isClient && this.Y == 6)
+                {
+                    Point doubleForwardMove = new Point(X, Y + 2*direction);
+                    if (IsValidMove(doubleForwardMove, board, out canCapture) && !canCapture)
+                        validMoves.Add(doubleForwardMove);
+                } else if (!isClient && this.Y == 1)
+                {
+                    Point doubleForwardMove = new Point(X, Y + 2 * direction);
+                    if (IsValidMove(doubleForwardMove, board, out canCapture) && !canCapture)
+                        validMoves.Add(doubleForwardMove);
+                }
+
                 Point forwardMove = new Point(X, Y + direction);
-                if (IsValidMove(forwardMove, board, out bool canCapture) && !canCapture)
+                if (IsValidMove(forwardMove, board, out canCapture) && !canCapture)
                     validMoves.Add(forwardMove);
 
                 Point leftMove = new Point(X - 1, Y);
@@ -74,14 +87,14 @@ namespace Half_Chess__Winform_Client_.Models
                 if (IsValidMove(rightCapture, board, out canCapture) && canCapture)
                     validMoves.Add(rightCapture);
             }
-            else if (Type == "♖" || Type == "♜")
+            else if (TypeName == "Rook")
             {
                 AddLinearMoves(validMoves, board, new Point(0, 1));
                 AddLinearMoves(validMoves, board, new Point(0, -1));
                 AddLinearMoves(validMoves, board, new Point(1, 0));
                 AddLinearMoves(validMoves, board, new Point(-1, 0));
             }
-            else if (Type == "♘" || Type == "♞")
+            else if (TypeName == "Knight")
             {
                 Point[] knightMoves = {
                                         new Point(2, 1), new Point(2, -1), new Point(-2, 1), new Point(-2, -1),
@@ -95,17 +108,17 @@ namespace Half_Chess__Winform_Client_.Models
                         validMoves.Add(knightMove);
                 }
             }
-            else if (Type == "♗" || Type == "♝")
+            else if (TypeName == "Bishop")
             {
                 AddLinearMoves(validMoves, board, new Point(1, 1));
                 AddLinearMoves(validMoves, board, new Point(1, -1));
                 AddLinearMoves(validMoves, board, new Point(-1, 1));
                 AddLinearMoves(validMoves, board, new Point(-1, -1));
             }
-            else if (Type == "♔" || Type == "♚")
+            else if (TypeName == "King")
             {
-                List<Point> potentialMoves = GetKingMoves(board);
-                validMoves = FilterMovesThatPreventCheck(board, potentialMoves);
+                validMoves = GetKingMoves(board);
+                validMoves = FilterMovesThatPreventCheck(board, validMoves, isClient);
             }
             return validMoves;
         }
@@ -150,7 +163,7 @@ namespace Half_Chess__Winform_Client_.Models
             return false;
         }
 
-        public List<Point> FilterMovesThatPreventCheck(ChessPiece[,] board, List<Point> potentialMoves)
+        public List<Point> FilterMovesThatPreventCheck(ChessPiece[,] board, List<Point> potentialMoves, bool isClient)
         {
             List<Point> safeMoves = new List<Point>();
             Point kingPosition = new Point(X, Y);
@@ -169,7 +182,7 @@ namespace Half_Chess__Winform_Client_.Models
                 board[move.Y, move.X] = this;
 
                 // Check if the move would result in the king being in check
-                bool isKingInCheckAfterMove = IsKingInCheck(board);
+                bool isKingInCheckAfterMove = IsKingInCheck(board, isClient);
 
                 // Revert the move
                 board[move.Y, move.X] = originalPieceAtTarget;
@@ -204,7 +217,7 @@ namespace Half_Chess__Winform_Client_.Models
             return potentialMoves;
         }
 
-        private bool IsKingInCheck(ChessPiece[,] board)
+        private bool IsKingInCheck(ChessPiece[,] board, bool isClient)
         {
             Point kingPosition = new Point(X, Y);
             // Check if any opponent's piece can move to the king's position
@@ -219,7 +232,7 @@ namespace Half_Chess__Winform_Client_.Models
                             return true;
                     } else if (piece.PieceColor != PieceColor)
                     {
-                        List<Point> moves = piece.CalculateValidMoves(board);
+                        List<Point> moves = piece.CalculateValidMoves(board, !isClient);
                         if (moves.Contains(kingPosition))
                             return true;
                     }

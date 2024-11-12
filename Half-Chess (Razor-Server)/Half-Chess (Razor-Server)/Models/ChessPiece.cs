@@ -26,15 +26,30 @@ namespace Half_Chess__Razor_Server_.Models
 
         public ChessPiece() { }
 
-        public List<Point> CalculateValidMoves(ChessPiece[,] board)
+        public List<Point> CalculateValidMoves(ChessPiece[,] board, bool isServer)
         {
             List<Point> validMoves = new List<Point>();
 
-            if (Type == "♙" || Type == "♟")
+            if (TypeName == "Pawn")
             {
-                int direction = PieceColor == ChessColor.White ? -1 : 1;
+                int direction = isServer ? 1 : -1;
+                bool canCapture;
+
+                if (isServer && this.Y == 1)
+                {
+                    Point doubleForwardMove = new Point(X, Y + 2 * direction);
+                    if (IsValidMove(doubleForwardMove, board, out canCapture) && !canCapture)
+                        validMoves.Add(doubleForwardMove);
+                }
+                else if (!isServer && this.Y == 6)
+                {
+                    Point doubleForwardMove = new Point(X, Y + 2 * direction);
+                    if (IsValidMove(doubleForwardMove, board, out canCapture) && !canCapture)
+                        validMoves.Add(doubleForwardMove);
+                }
+
                 Point forwardMove = new Point(X, Y + direction);
-                if (IsValidMove(forwardMove, board, out bool canCapture) && !canCapture)
+                if (IsValidMove(forwardMove, board, out canCapture) && !canCapture)
                     validMoves.Add(forwardMove);
 
                 Point leftMove = new Point(X - 1, Y);
@@ -53,14 +68,14 @@ namespace Half_Chess__Razor_Server_.Models
                 if (IsValidMove(rightCapture, board, out canCapture) && canCapture)
                     validMoves.Add(rightCapture);
             }
-            else if (Type == "♖" || Type == "♜")
+            else if (TypeName == "Rook")
             {
                 AddLinearMoves(validMoves, board, new Point(0, 1));
                 AddLinearMoves(validMoves, board, new Point(0, -1));
                 AddLinearMoves(validMoves, board, new Point(1, 0));
                 AddLinearMoves(validMoves, board, new Point(-1, 0));
             }
-            else if (Type == "♘" || Type == "♞")
+            else if (TypeName == "Knight")
             {
                 Point[] knightMoves = {
                                         new Point(2, 1), new Point(2, -1), new Point(-2, 1), new Point(-2, -1),
@@ -74,14 +89,14 @@ namespace Half_Chess__Razor_Server_.Models
                         validMoves.Add(knightMove);
                 }
             }
-            else if (Type == "♗" || Type == "♝")
+            else if (TypeName == "Bishop")
             {
                 AddLinearMoves(validMoves, board, new Point(1, 1));
                 AddLinearMoves(validMoves, board, new Point(1, -1));
                 AddLinearMoves(validMoves, board, new Point(-1, 1));
                 AddLinearMoves(validMoves, board, new Point(-1, -1));
             }
-            else if (Type == "♔" || Type == "♚")
+            else if (TypeName == "King")
             {
                 Point[] kingMoves = {
                                     new Point(1, 0), new Point(-1, 0), new Point(0, 1), new Point(0, -1),
