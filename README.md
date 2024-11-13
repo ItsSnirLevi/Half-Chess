@@ -39,7 +39,6 @@ Welcome to **Half Chess**, where strategy meets speed on a condensed battlefield
 ![image](https://github.com/user-attachments/assets/f7afeb05-4ea3-44e3-846c-7175105c5002)
 ![image](https://github.com/user-attachments/assets/419ae9bf-8da3-47eb-99aa-a8c7ad0083f8)
 ![image](https://github.com/user-attachments/assets/c79e6d45-7838-4096-9fe1-dfed61fa457c)
-![image](https://github.com/user-attachments/assets/76788104-236c-40d8-be1b-c5689dc2ccd8)
 
 
 ## 🤝 Contributing
