@@ -4,22 +4,24 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="GameDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="GameDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="TblGames">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PlayerID" Type="int" Nullable="false" />
+          <Property Name="PlayerName" Type="char" MaxLength="20" Nullable="false" />
           <Property Name="StartGameTime" Type="datetime" Nullable="false" />
           <Property Name="GameDuration" Type="float" Nullable="false" />
-          <Property Name="GameMoves" Type="text" />
+          <Property Name="GameMoves" Type="text" Nullable="false" />
+          <Property Name="IsWhite" Type="bit" Nullable="false" />
+          <Property Name="Winner" Type="char" MaxLength="20" Nullable="false" />
         </EntityType>
         <EntityContainer Name="GameDBModelStoreContainer">
           <EntitySet Name="TblGames" EntityType="Self.TblGames" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="GameDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -31,7 +33,10 @@
           <Property Name="PlayerID" Type="Int32" Nullable="false" />
           <Property Name="StartGameTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="GameDuration" Type="Double" Nullable="false" />
-          <Property Name="GameMoves" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="GameMoves" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PlayerName" Type="String" Nullable="false" MaxLength="20" FixedLength="true" Unicode="false" />
+          <Property Name="Winner" Type="String" Nullable="false" MaxLength="20" FixedLength="true" Unicode="false" />
+          <Property Name="IsWhite" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityContainer Name="GameDBEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="TblGames" EntityType="Self.TblGames" />
@@ -45,6 +50,9 @@
           <EntitySetMapping Name="TblGames">
             <EntityTypeMapping TypeName="GameDBModel.TblGames">
               <MappingFragment StoreEntitySet="TblGames">
+                <ScalarProperty Name="IsWhite" ColumnName="IsWhite" />
+                <ScalarProperty Name="Winner" ColumnName="Winner" />
+                <ScalarProperty Name="PlayerName" ColumnName="PlayerName" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="PlayerID" ColumnName="PlayerID" />
                 <ScalarProperty Name="StartGameTime" ColumnName="StartGameTime" />

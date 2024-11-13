@@ -6,6 +6,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Media;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -56,6 +57,16 @@ namespace Half_Chess__Winform_Client_
 
         private const string PATH = "https://localhost:44382/";
 
+        public GameDBEntities db = new GameDBEntities();
+
+        private string gameMoves;
+        private DateTime startTime;
+        public enum Winner
+        {
+            Client,
+            Server,
+            Stalemate
+        }
         public GameForm(LoginForm f)
         {
             InitializeComponent();
@@ -117,6 +128,9 @@ namespace Half_Chess__Winform_Client_
                 ServerPlay();
 
             this.FormClosing += GameForm_FormClosing;
+
+            gameMoves = "";
+            startTime = DateTime.Now;
         }
 
         private void GameForm_Load(object sender, EventArgs e)
@@ -270,11 +284,11 @@ namespace Half_Chess__Winform_Client_
 
                     if (isOppKingInCheck && IsCheckmate(oppColor))
                     { 
-                        EndGame("You Win!");
+                        EndGame((int)Winner.Client);
                     }
                     else if (!isOppKingInCheck && IsStalemate(oppColor))
                     {
-                        EndGame("Stalemate!");
+                        EndGame((int)Winner.Stalemate);
                     }
 
                     Invalidate();
@@ -285,11 +299,11 @@ namespace Half_Chess__Winform_Client_
 
                     if (isMyKingInCheck && IsCheckmate(myColor))
                     {
-                        EndGame("You Lose!");
+                        EndGame((int)Winner.Server);
                     }
                     else if (!isOppKingInCheck && IsStalemate(myColor))
                     {
-                        EndGame("Stalemate!");
+                        EndGame((int)Winner.Stalemate);
                     }
                 }
                 else
@@ -352,6 +366,8 @@ namespace Half_Chess__Winform_Client_
 
         private void MoveTo(Point target)
         {
+            gameMoves += $"{selectedPiece.X}{selectedPiece.Y}{target.X}{target.Y} ";
+
             CapturePiece(target.X, target.Y);
             boardPieces[selectedPiece.Y, selectedPiece.X] = null;
             selectedPiece.X = target.X;
@@ -364,6 +380,7 @@ namespace Half_Chess__Winform_Client_
                 myKingBlinkPosition = myKingPosition;
             }
 
+
             selectedPiece = null;
             validMoves.Clear();
         }
@@ -371,6 +388,8 @@ namespace Half_Chess__Winform_Client_
         private void ServerMoveTo(CustomPoint origin, CustomPoint target)
         {
             selectedPiece = boardPieces[origin.Y, origin.X];
+            gameMoves += $"{selectedPiece.X}{selectedPiece.Y}{target.X}{target.Y} ";
+
             CapturePiece(target.X, target.Y);
             boardPieces[origin.Y, origin.X] = null;
             selectedPiece.X = target.X;
@@ -391,11 +410,45 @@ namespace Half_Chess__Winform_Client_
             remainingTime = form.turnTime;
         }
 
-        private void EndGame(string msg)
+        private async void EndGame(int winner)
         {
             gameOver = true;
             turnTimer.Stop();
             remainingTime = form.turnTime;
+
+            DateTime endTime = DateTime.Now;
+            TimeSpan gameDuration = endTime - startTime;
+
+            string msg;
+            string winner_txt;
+
+            if (winner == 0)
+            {
+                msg = "You Win!";
+                winner_txt = form.user.FirstName; 
+            } else if (winner == 1)
+            {
+                msg = "You Lose!";
+                winner_txt = "Server";
+            } else
+            {
+                msg = "Stalemate!";
+                winner_txt = "Stalemate";
+            }
+
+            var game = new TblGames
+            {
+                PlayerID = form.user.Id,
+                PlayerName = form.user.FirstName,
+                StartGameTime = startTime,
+                GameDuration = (float)gameDuration.TotalSeconds,
+                GameMoves = gameMoves,
+                IsWhite = myColor == ChessPiece.ChessColor.White ? true : false, 
+                Winner = winner_txt
+            };
+
+            db.TblGames.Add(game);
+            await db.SaveChangesAsync();
 
             using (EndGameDialog endGameDialog = new EndGameDialog(msg))
             {
@@ -555,8 +608,8 @@ namespace Half_Chess__Winform_Client_
             {
                 TimerLabel.Text = "Time's Up!";
 
-                string msg = myTurn ? "You Lost" : "You Win";
-                EndGame(msg);
+                int winner = myTurn ? (int)Winner.Server : (int)Winner.Client;
+                EndGame(winner);
             }
         }
 

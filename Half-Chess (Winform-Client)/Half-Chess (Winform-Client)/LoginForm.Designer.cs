@@ -34,7 +34,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.signIn_textBox = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.signIn_button = new System.Windows.Forms.Button();
+            this.startGame_button = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.Turn_comboBox = new System.Windows.Forms.ComboBox();
@@ -43,7 +43,16 @@
             this.BlackRadioButton = new System.Windows.Forms.RadioButton();
             this.label5 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.tblDataGridView = new System.Windows.Forms.DataGridView();
+            this.label6 = new System.Windows.Forms.Label();
+            this.submit_button = new System.Windows.Forms.Button();
+            this.tblBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.Player_label = new System.Windows.Forms.Label();
+            this.refresh_button = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tblDataGridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tblBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // WelcomeLabel
@@ -60,7 +69,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Rockwell Nova Cond", 48F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(435, 246);
+            this.label2.Location = new System.Drawing.Point(470, 237);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(219, 108);
             this.label2.TabIndex = 1;
@@ -68,7 +77,7 @@
             // 
             // signIn_textBox
             // 
-            this.signIn_textBox.Location = new System.Drawing.Point(444, 374);
+            this.signIn_textBox.Location = new System.Drawing.Point(479, 365);
             this.signIn_textBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.signIn_textBox.Name = "signIn_textBox";
             this.signIn_textBox.Size = new System.Drawing.Size(211, 22);
@@ -78,25 +87,25 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Rockwell Nova Cond", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(316, 365);
+            this.label3.Location = new System.Drawing.Point(351, 356);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(118, 47);
             this.label3.TabIndex = 4;
             this.label3.Text = "Player ID";
             this.toolTip1.SetToolTip(this.label3, "Enter the ID you registered with");
             // 
-            // signIn_button
+            // startGame_button
             // 
-            this.signIn_button.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.signIn_button.Font = new System.Drawing.Font("Rockwell Nova Cond", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.signIn_button.Location = new System.Drawing.Point(456, 430);
-            this.signIn_button.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.signIn_button.Name = "signIn_button";
-            this.signIn_button.Size = new System.Drawing.Size(179, 65);
-            this.signIn_button.TabIndex = 5;
-            this.signIn_button.Text = "Let\'s Go!";
-            this.signIn_button.UseVisualStyleBackColor = true;
-            this.signIn_button.Click += new System.EventHandler(this.signIn_button_Click);
+            this.startGame_button.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.startGame_button.Font = new System.Drawing.Font("Rockwell Nova Cond", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.startGame_button.Location = new System.Drawing.Point(498, 590);
+            this.startGame_button.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.startGame_button.Name = "startGame_button";
+            this.startGame_button.Size = new System.Drawing.Size(179, 65);
+            this.startGame_button.TabIndex = 5;
+            this.startGame_button.Text = "Start Game";
+            this.startGame_button.UseVisualStyleBackColor = true;
+            this.startGame_button.Click += new System.EventHandler(this.startGame_button_Click);
             // 
             // label1
             // 
@@ -180,18 +189,87 @@
             this.groupBox1.TabIndex = 12;
             this.groupBox1.TabStop = false;
             // 
+            // tblDataGridView
+            // 
+            this.tblDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.tblDataGridView.Location = new System.Drawing.Point(12, 270);
+            this.tblDataGridView.Name = "tblDataGridView";
+            this.tblDataGridView.RowHeadersWidth = 51;
+            this.tblDataGridView.RowTemplate.Height = 24;
+            this.tblDataGridView.Size = new System.Drawing.Size(289, 277);
+            this.tblDataGridView.TabIndex = 14;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Rockwell Nova Cond", 13.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(17, 226);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(103, 30);
+            this.label6.TabIndex = 15;
+            this.label6.Text = "Game History";
+            // 
+            // submit_button
+            // 
+            this.submit_button.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.submit_button.Font = new System.Drawing.Font("Rockwell Nova Cond", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.submit_button.Location = new System.Drawing.Point(513, 410);
+            this.submit_button.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.submit_button.Name = "submit_button";
+            this.submit_button.Size = new System.Drawing.Size(147, 68);
+            this.submit_button.TabIndex = 16;
+            this.submit_button.Text = "Submit";
+            this.submit_button.UseVisualStyleBackColor = true;
+            this.submit_button.Click += new System.EventHandler(this.submit_button_Click);
+            // 
+            // Player_label
+            // 
+            this.Player_label.AutoSize = true;
+            this.Player_label.Font = new System.Drawing.Font("Rockwell Nova Cond", 22.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Player_label.Location = new System.Drawing.Point(489, 524);
+            this.Player_label.Name = "Player_label";
+            this.Player_label.Size = new System.Drawing.Size(0, 50);
+            this.Player_label.TabIndex = 17;
+            // 
+            // refresh_button
+            // 
+            this.refresh_button.Font = new System.Drawing.Font("Rockwell Nova Cond", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.refresh_button.Location = new System.Drawing.Point(226, 227);
+            this.refresh_button.Name = "refresh_button";
+            this.refresh_button.Size = new System.Drawing.Size(75, 37);
+            this.refresh_button.TabIndex = 18;
+            this.refresh_button.Text = "Refresh";
+            this.refresh_button.UseVisualStyleBackColor = true;
+            this.refresh_button.Click += new System.EventHandler(this.refresh_button_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(124, 590);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 19;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            // 
             // LoginForm
             // 
-            this.AcceptButton = this.signIn_button;
+            this.AcceptButton = this.submit_button;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1045, 690);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.refresh_button);
+            this.Controls.Add(this.Player_label);
+            this.Controls.Add(this.submit_button);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.tblDataGridView);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.Turn_comboBox);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.signIn_button);
+            this.Controls.Add(this.startGame_button);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.signIn_textBox);
             this.Controls.Add(this.label2);
@@ -203,6 +281,8 @@
             this.Load += new System.EventHandler(this.LoginForm_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tblDataGridView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tblBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -214,7 +294,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox signIn_textBox;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Button signIn_button;
+        private System.Windows.Forms.Button startGame_button;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.ComboBox Turn_comboBox;
@@ -223,6 +303,13 @@
         private System.Windows.Forms.RadioButton BlackRadioButton;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.DataGridView tblDataGridView;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button submit_button;
+        private System.Windows.Forms.BindingSource tblBindingSource;
+        private System.Windows.Forms.Label Player_label;
+        private System.Windows.Forms.Button refresh_button;
+        private System.Windows.Forms.Button button1;
     }
 }
 

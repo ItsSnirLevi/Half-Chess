@@ -19,5 +19,8 @@ namespace Half_Chess__Winform_Client_
         public System.DateTime StartGameTime { get; set; }
         public double GameDuration { get; set; }
         public string GameMoves { get; set; }
+        public string PlayerName { get; set; }
+        public string Winner { get; set; }
+        public bool IsWhite { get; set; }
     }
 }
