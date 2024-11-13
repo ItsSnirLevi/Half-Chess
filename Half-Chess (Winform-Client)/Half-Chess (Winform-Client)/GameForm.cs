@@ -644,7 +644,11 @@ namespace Half_Chess__Winform_Client_
             {
                 using (Graphics g = Graphics.FromImage(canvas))
                 {
-                    g.DrawLine(Pens.Black, lastPoint, e.Location);
+                    using (Pen pen = new Pen(Color.Black, 5))
+                    {
+                        g.DrawLine(pen, lastPoint, e.Location);
+                    }
+                    // g.DrawLine(Pens.Black, lastPoint, e.Location);
                 }
                 lastPoint = e.Location;
                 Invalidate(); // Request form repaint
