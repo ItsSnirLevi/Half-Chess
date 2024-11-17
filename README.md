@@ -33,7 +33,7 @@ Welcome to **Half Chess**, where strategy meets speed on a condensed battlefield
 - Dynamic Gameplay: Experience the thrill of Half Chess with time-limited moves and unique pawn mechanics.
 - Database Integration: View and query your game history using the Razor website.
 - Tactical Drawing: Draw on the game board to illustrate and plan your strategies.
-- 
+  
 ## 📸 Screenshots
 ![image](https://github.com/user-attachments/assets/f8d6ac81-a739-4de4-b3d3-4e92389cc844)
 ![image](https://github.com/user-attachments/assets/f7afeb05-4ea3-44e3-846c-7175105c5002)
