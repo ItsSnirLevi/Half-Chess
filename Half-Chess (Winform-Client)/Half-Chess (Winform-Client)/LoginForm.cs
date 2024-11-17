@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.Entity;
 using System.Drawing;
 using System.Linq;
 using System.Net.Http;
@@ -149,8 +150,27 @@ namespace Half_Chess__Winform_Client_
 
         private void button1_Click_1(object sender, EventArgs e)
         {
+            
             DatabaseForm form = new DatabaseForm();
             form.Show();
+        }
+
+        private void ReplayButton_Click(object sender, EventArgs e)
+        {
+            if (tblDataGridView.SelectedRows.Count > 0) 
+            {
+                var selectedRow = tblDataGridView.SelectedRows[0];
+                var id = Convert.ToInt32(selectedRow.Cells[0].Value);
+
+                TblGames row = db.TblGames.FirstOrDefault(r => r.Id == id);
+
+
+                ReplayForm form = new ReplayForm(row);
+                form.Show();
+
+                // MessageBox.Show("Selected ID: " + id);
+            }
+
         }
     }
 }

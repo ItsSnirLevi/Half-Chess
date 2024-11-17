@@ -21,7 +21,27 @@ namespace Half_Chess__Razor_Server_.api
             _context = context;
         }
 
-        
+        // POST: api/TblUsers/AddGameToPlayer
+        [HttpPost("AddGameToPlayer")]
+        public async Task<IActionResult> AddGameToPlayer([FromBody] int playerId)
+        {
+            if (_context.TblUsers == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _context.TblUsers.FindAsync(playerId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            user.GamesPlayed += 1;
+            await _context.SaveChangesAsync();
+
+            return Ok(); 
+        }
+
         // GET: api/TblUsers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TblUsers>>> GetTblUsers()
@@ -96,6 +116,7 @@ namespace Half_Chess__Razor_Server_.api
 
             return CreatedAtAction("GetTblUsers", new { id = tblUsers.Id }, tblUsers);
         }
+
 
         // DELETE: api/TblUsers/5
         [HttpDelete("{id}")]

@@ -38,6 +38,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.TblUsers[0].LastPlayed)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TblUsers[0].GamesPlayed)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -64,6 +67,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.LastPlayed)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GamesPlayed)
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
@@ -95,13 +101,36 @@ else if (Model.CurrentTableFormat == IndexModel.TableFormat.LastPlayedOnly)
         </tbody>
     </table>
 }
+else if (Model.CurrentTableFormat == IndexModel.TableFormat.GamesPlayed)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Player Name</th>
+                <th>Games Played</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var player in Model.GamesPlayedList)
+            {
+                <tr>
+                    <td>@player.Name</td>
+                    <td>@player.Games</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 
 <form action="" method="post">
-    <button asp-page="" asp-page-handler="SortByName" class="btn btn-dark" autofocus> Sort by name (case insensitive)</button>
+    <button asp-page="" asp-page-handler="SortByName" class="btn btn-dark" autofocus> Sort by name (case insensitive) </button>
     <br />
     <br />
-    <button asp-page="" asp-page-handler="ShowLastPlayed" class="btn btn-dark"> Players last game time</button>
+    <button asp-page="" asp-page-handler="ShowLastPlayed" class="btn btn-dark"> Players last game time </button>
     <br />
     <br />
-    <button asp-page="" asp-page-handler="ShowFirstPlayersByCountry" class="btn btn-dark"> Show first players by country</button>
+    <button asp-page="" asp-page-handler="ShowFirstPlayersByCountry" class="btn btn-dark"> Show first players by country </button>
+    <br />
+    <br />
+    <button asp-page="" asp-page-handler="ShowGamesPlayed" class="btn btn-dark"> Show amount of games played by player </button>
 </form>

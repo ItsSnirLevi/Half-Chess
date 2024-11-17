@@ -36,8 +36,8 @@ namespace Half_Chess__Razor_Server_.api
             Random random = new Random();
             List<ChessPiece> piecesOfColor = new List<ChessPiece>();
 
-            // Add a random delay between 1 and 3 seconds
-            int delay = random.Next(1, 4);
+            // Add a random delay between 1 and 2 seconds
+            int delay = random.Next(1, 3);
             Thread.Sleep(delay * 1000);
 
             for (int y = 0; y < 8; y++)

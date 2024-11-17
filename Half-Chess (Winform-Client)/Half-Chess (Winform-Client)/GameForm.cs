@@ -1,14 +1,9 @@
 ﻿using Half_Chess__Winform_Client_.Models;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.IO;
 using System.Linq;
-using System.Media;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -410,6 +405,16 @@ namespace Half_Chess__Winform_Client_
             remainingTime = form.turnTime;
         }
 
+        async Task SendPlayerIdAsync(string url, int playerId)
+        {
+            HttpResponseMessage response = await client.PostAsJsonAsync(url, playerId);
+
+            if (response.IsSuccessStatusCode)
+            {
+                Console.WriteLine("Player ID sent successfully.");
+            }
+        }
+
         private async void EndGame(int winner)
         {
             gameOver = true;
@@ -449,6 +454,8 @@ namespace Half_Chess__Winform_Client_
 
             db.TblGames.Add(game);
             await db.SaveChangesAsync();
+
+            await SendPlayerIdAsync(PATH + "api/TblUsers/AddGameToPlayer", form.user.Id);
 
             using (EndGameDialog endGameDialog = new EndGameDialog(msg))
             {
@@ -684,7 +691,7 @@ namespace Half_Chess__Winform_Client_
             // Draw pieces
             foreach (ChessPiece piece in boardPieces)
                 if (piece != null)
-                    piece.DrawPiece(g);
+                    piece.DrawPiece(g, boardCells);
 
             g.DrawImage(canvas, Point.Empty);
 

@@ -46,10 +46,11 @@
             this.tblDataGridView = new System.Windows.Forms.DataGridView();
             this.label6 = new System.Windows.Forms.Label();
             this.submit_button = new System.Windows.Forms.Button();
-            this.tblBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.Player_label = new System.Windows.Forms.Label();
             this.refresh_button = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
+            this.tblBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.ReplayButton = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tblDataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tblBindingSource)).BeginInit();
@@ -196,6 +197,7 @@
             this.tblDataGridView.Name = "tblDataGridView";
             this.tblDataGridView.RowHeadersWidth = 51;
             this.tblDataGridView.RowTemplate.Height = 24;
+            this.tblDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.tblDataGridView.Size = new System.Drawing.Size(289, 277);
             this.tblDataGridView.TabIndex = 14;
             // 
@@ -244,7 +246,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(124, 590);
+            this.button1.Location = new System.Drawing.Point(108, 633);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 19;
@@ -252,12 +254,24 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click_1);
             // 
+            // ReplayButton
+            // 
+            this.ReplayButton.Font = new System.Drawing.Font("Rockwell Nova Cond", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ReplayButton.Location = new System.Drawing.Point(89, 575);
+            this.ReplayButton.Name = "ReplayButton";
+            this.ReplayButton.Size = new System.Drawing.Size(113, 37);
+            this.ReplayButton.TabIndex = 20;
+            this.ReplayButton.Text = "Replay Game";
+            this.ReplayButton.UseVisualStyleBackColor = true;
+            this.ReplayButton.Click += new System.EventHandler(this.ReplayButton_Click);
+            // 
             // LoginForm
             // 
             this.AcceptButton = this.submit_button;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1045, 690);
+            this.Controls.Add(this.ReplayButton);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.refresh_button);
             this.Controls.Add(this.Player_label);
@@ -310,6 +324,7 @@
         private System.Windows.Forms.Label Player_label;
         private System.Windows.Forms.Button refresh_button;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button ReplayButton;
     }
 }
 

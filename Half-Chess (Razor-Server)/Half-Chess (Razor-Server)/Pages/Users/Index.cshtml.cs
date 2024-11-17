@@ -21,12 +21,15 @@ namespace Half_Chess__Razor_Server_.Pages.Users
 
         public IList<TblUsers> TblUsers { get;set; } = default!;
         public IList<PlayerLastPlayed> PlayerLastPlayedList = new List<PlayerLastPlayed>();
+        public IList<GamesPlayed> GamesPlayedList = new List<GamesPlayed>();
+
         public TableFormat CurrentTableFormat { get; set; } = TableFormat.FullTable;
 
         public enum TableFormat
         {
             FullTable,
             LastPlayedOnly,
+            GamesPlayed
         }
 
         public async Task OnGetAsync()
@@ -82,6 +85,27 @@ namespace Half_Chess__Razor_Server_.Pages.Users
             }
         }
 
+        public async Task OnPostShowGamesPlayedAsync()
+        {
+            if (_context.TblUsers != null)
+            {
+                var players = await _context.TblUsers
+                .Select(p => new
+                {
+                    Name = p.FirstName,
+                    Games = p.GamesPlayed
+                })
+                .ToListAsync();
+
+                GamesPlayedList = players.Select(p => new GamesPlayed
+                {
+                    Name = p.Name,
+                    Games = p.Games
+                }).ToList();
+
+                CurrentTableFormat = TableFormat.GamesPlayed;
+            }
+        }
 
 
     }

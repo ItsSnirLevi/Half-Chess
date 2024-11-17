@@ -35,23 +35,25 @@ namespace Half_Chess__Razor_Server_.Models
                 int direction = isServer ? 1 : -1;
                 bool canCapture;
 
-                if (isServer && this.Y == 1)
-                {
-                    Point doubleForwardMove = new Point(X, Y + 2 * direction);
-                    if (IsValidMove(doubleForwardMove, board, out canCapture) && !canCapture)
-                        validMoves.Add(doubleForwardMove);
-                }
-                else if (!isServer && this.Y == 6)
-                {
-                    Point doubleForwardMove = new Point(X, Y + 2 * direction);
-                    if (IsValidMove(doubleForwardMove, board, out canCapture) && !canCapture)
-                        validMoves.Add(doubleForwardMove);
-                }
-
                 Point forwardMove = new Point(X, Y + direction);
                 if (IsValidMove(forwardMove, board, out canCapture) && !canCapture)
+                {
                     validMoves.Add(forwardMove);
 
+                    if (isServer && this.Y == 1)
+                    {
+                        Point doubleForwardMove = new Point(X, Y + 2 * direction);
+                        if (IsValidMove(doubleForwardMove, board, out canCapture) && !canCapture)
+                            validMoves.Add(doubleForwardMove);
+                    }
+                    else if (!isServer && this.Y == 6)
+                    {
+                        Point doubleForwardMove = new Point(X, Y + 2 * direction);
+                        if (IsValidMove(doubleForwardMove, board, out canCapture) && !canCapture)
+                            validMoves.Add(doubleForwardMove);
+                    }
+                }
+                    
                 Point leftMove = new Point(X - 1, Y);
                 Point rightMove = new Point(X + 1, Y);
                 if (IsValidMove(leftMove, board, out canCapture) && !canCapture)

@@ -36,11 +36,11 @@ namespace Half_Chess__Winform_Client_.Models
             TypeName = typeName;    
         }
 
-        public void DrawPiece(Graphics g)
+        public void DrawPiece(Graphics g, Rectangle[,] boardCells)
         {
             using (Brush brush = new SolidBrush(Color.Black))
             {
-                Rectangle cell = GameForm.boardCells[Y, X];
+                Rectangle cell = boardCells[Y, X];
                 cell.Y += 10;
                 g.DrawString(Type.Substring(0, 1), new Font("Arial", 40),
                              brush, cell.Location);
@@ -55,21 +55,25 @@ namespace Half_Chess__Winform_Client_.Models
             {
                 int direction = isClient ? -1 : 1;
                 bool canCapture;
-                if (isClient && this.Y == 6)
-                {
-                    Point doubleForwardMove = new Point(X, Y + 2*direction);
-                    if (IsValidMove(doubleForwardMove, board, out canCapture) && !canCapture)
-                        validMoves.Add(doubleForwardMove);
-                } else if (!isClient && this.Y == 1)
-                {
-                    Point doubleForwardMove = new Point(X, Y + 2 * direction);
-                    if (IsValidMove(doubleForwardMove, board, out canCapture) && !canCapture)
-                        validMoves.Add(doubleForwardMove);
-                }
 
                 Point forwardMove = new Point(X, Y + direction);
                 if (IsValidMove(forwardMove, board, out canCapture) && !canCapture)
+                {
                     validMoves.Add(forwardMove);
+
+                    if (isClient && this.Y == 6)
+                    {
+                        Point doubleForwardMove = new Point(X, Y + 2 * direction);
+                        if (IsValidMove(doubleForwardMove, board, out canCapture) && !canCapture)
+                            validMoves.Add(doubleForwardMove);
+                    }
+                    else if (!isClient && this.Y == 1)
+                    {
+                        Point doubleForwardMove = new Point(X, Y + 2 * direction);
+                        if (IsValidMove(doubleForwardMove, board, out canCapture) && !canCapture)
+                            validMoves.Add(doubleForwardMove);
+                    }
+                }
 
                 Point leftMove = new Point(X - 1, Y);
                 Point rightMove = new Point(X + 1, Y);
