@@ -15,5 +15,7 @@ namespace Half_Chess__Razor_Server_.Data
         }
 
         public DbSet<Half_Chess__Razor_Server_.Models.TblUsers> TblUsers { get; set; } = default!;
+        public DbSet<Half_Chess__Razor_Server_.Models.TblGames> TblGames { get; set; } = default!;
+
     }
 }

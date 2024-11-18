@@ -1,4 +1,5 @@
 ﻿using Half_Chess__Winform_Client_.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -33,6 +34,8 @@ namespace Half_Chess__Winform_Client_
             this.MinimumSize = new Size(800, 600); 
             this.MaximumSize = new Size(1024, 768);
             Turn_comboBox.SelectedIndex = 1;
+            
+            GetGameDB();
         }
 
         private void LoginForm_Load(object sender, EventArgs e)
@@ -63,6 +66,38 @@ namespace Half_Chess__Winform_Client_
             return response.IsSuccessStatusCode;
         }
 
+        //private async void submit_button_Click(object sender, EventArgs e)
+        //{
+        //    string playerId = signIn_textBox.Text;
+        //    if (playerId.Length == 0)
+        //        return;
+
+        //    string toUser = "api/TblUsers/" + signIn_textBox.Text;
+        //    user = await GetUserAsync(PATH + toUser);
+
+        //    if (user == null)
+        //    {
+        //        MessageBox.Show("Please register at our website before trying to sign in!", "User ID Does Not Exist",
+        //                        MessageBoxButtons.OK,
+        //                        MessageBoxIcon.Warning);
+        //    } else
+        //    {
+        //        Player_label.Text = "Welcome, " + user.FirstName;
+
+        //        tblBindingSource.DataSource =
+        //        (from game in db.TblGames
+        //         where game.PlayerID == user.Id 
+        //         select new
+        //         {
+        //             GameID = game.Id,     
+        //             GameTime = game.StartGameTime,     
+        //             Duration = game.GameDuration,           
+        //             Winner = game.Winner                    
+        //         }).ToList();
+        //        tblDataGridView.DataSource = tblBindingSource;
+        //    }
+        //}
+
         private async void submit_button_Click(object sender, EventArgs e)
         {
             string playerId = signIn_textBox.Text;
@@ -77,21 +112,61 @@ namespace Half_Chess__Winform_Client_
                 MessageBox.Show("Please register at our website before trying to sign in!", "User ID Does Not Exist",
                                 MessageBoxButtons.OK,
                                 MessageBoxIcon.Warning);
-            } else
+            }
+            else
             {
                 Player_label.Text = "Welcome, " + user.FirstName;
 
                 tblBindingSource.DataSource =
-                (from game in db.TblGames
-                 where game.PlayerID == user.Id 
-                 select new
-                 {
-                     GameID = game.Id,     
-                     GameTime = game.StartGameTime,     
-                     Duration = game.GameDuration,           
-                     Winner = game.Winner                    
-                 }).ToList();
+                        (from game in db.TblGames
+                         where game.PlayerID == user.Id
+                         select new
+                         {
+                             GameID = game.Id,
+                             GameTime = game.StartGameTime,
+                             Duration = game.GameDuration,
+                             Winner = game.Winner
+                         }).ToList();
                 tblDataGridView.DataSource = tblBindingSource;
+            }
+        }
+
+        private async void GetGameDB()
+        {
+            string gamesApiUrl = "api/TblUsers/GetGames";
+            var games = await GetGamesAsync(PATH + gamesApiUrl);
+
+            if (games != null)
+            {
+                // Reset TblGames: Remove existing records
+                db.TblGames.RemoveRange(db.TblGames);
+                await db.SaveChangesAsync();
+
+                foreach (var game in games)
+                {
+                    db.TblGames.Add(new TblGames
+                    {        
+                        Id = game.Id,
+                        PlayerID = game.PlayerID,
+                        PlayerName = game.PlayerName,
+                        StartGameTime = game.StartGameTime,
+                        GameDuration = game.GameDuration,
+                        GameMoves = game.GameMoves,
+                        IsWhite = game.IsWhite,
+                        Winner = game.Winner
+                    }) ;
+                }
+
+                await db.SaveChangesAsync();
+            }
+        }
+
+        private async Task<List<TblGames>> GetGamesAsync(string url)
+        {
+            using (var client = new HttpClient())
+            {
+                var response = await client.GetStringAsync(url);
+                return JsonConvert.DeserializeObject<List<TblGames>>(response);
             }
         }
 
@@ -123,16 +198,11 @@ namespace Half_Chess__Winform_Client_
             isWhite = false;
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            DatabaseForm form = new DatabaseForm();
-            form.Show();
-        }
-
         private void refresh_button_Click(object sender, EventArgs e)
         {
             if (user != null)
             {
+                GetGameDB();
                 tblBindingSource.DataSource =
                (from game in db.TblGames
                 where game.PlayerID == user.Id
@@ -148,7 +218,7 @@ namespace Half_Chess__Winform_Client_
             }
         }
 
-        private void button1_Click_1(object sender, EventArgs e)
+        private void DB_Button_Click(object sender, EventArgs e)
         {
             
             DatabaseForm form = new DatabaseForm();

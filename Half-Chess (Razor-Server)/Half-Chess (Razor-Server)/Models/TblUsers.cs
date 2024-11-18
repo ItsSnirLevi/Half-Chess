@@ -20,6 +20,5 @@ namespace Half_Chess__Razor_Server_.Models
         public string? Country { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? LastPlayed { get; set; }
-        public int GamesPlayed { get; set; } = 0;
     }
 }

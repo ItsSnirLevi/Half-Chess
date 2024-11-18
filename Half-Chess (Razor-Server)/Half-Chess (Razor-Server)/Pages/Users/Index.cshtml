@@ -1,16 +1,11 @@
 ﻿@page
 @model Half_Chess__Razor_Server_.Pages.Users.IndexModel
 @using Half_Chess__Razor_Server_.Pages.Users 
-
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "D&Q";
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
+<h1>Data & Queries</h1>
 
 @if (Model.CurrentTableFormat == IndexModel.TableFormat.FullTable)
 {
@@ -37,9 +32,6 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.TblUsers[0].LastPlayed)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TblUsers[0].GamesPlayed)
             </th>
             <th></th>
         </tr>
@@ -69,12 +61,9 @@
                 @Html.DisplayFor(modelItem => item.LastPlayed)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.GamesPlayed)
-            </td>
-            <td>
                 <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-page="./Delete" asp-route-id="@item.Id" asp-route-isUser="@true">Delete</a>
             </td>
         </tr>
 }
@@ -121,8 +110,72 @@ else if (Model.CurrentTableFormat == IndexModel.TableFormat.GamesPlayed)
         </tbody>
     </table>
 }
+else if (Model.CurrentTableFormat == IndexModel.TableFormat.GroupedByCountry)
+{
+    <h2>Players Grouped by Country</h2>
+    @foreach (var group in Model.PlayersByCountryList)
+    {
+        <h3>@group.Country</h3>
+        <ul>
+            @foreach (var player in group.Players)
+            {
+                <li>@player.FirstName @player.LastName - @player.Phone</li>
+            }
+        </ul>
+    }
+}
+else if (Model.CurrentTableFormat == IndexModel.TableFormat.ByGamesPlayedDescending)
+{
+    <h2>Players by Games Played</h2>
+    @foreach (var group in Model.PlayersByGames)
+    {
+        <h3>@group.GamesCount @((group.GamesCount == 1) ? "Game" : "Games"):</h3>
+        <ul>
+            @foreach (var player in group.Players)
+            {
+                <li>@player.FirstName @player.LastName</li>
+            }
+        </ul>
+    }
+}
+else if (Model.CurrentTableFormat == IndexModel.TableFormat.ShowGamesTable)
+{
+    <table class="table">
+        <thead>
+            <tr>
+@*                <th>@Html.DisplayNameFor(model => model.TblGamesList[0].Id)</th>
+*@              <th>@Html.DisplayNameFor(model => model.TblGamesList[0].PlayerID)</th>
+                <th>@Html.DisplayNameFor(model => model.TblGamesList[0].PlayerName)</th>
+@*                <th>@Html.DisplayNameFor(model => model.TblGamesList[0].GameMoves)</th>
+*@              <th>@Html.DisplayNameFor(model => model.TblGamesList[0].StartGameTime)</th>
+                <th>@Html.DisplayNameFor(model => model.TblGamesList[0].GameDuration)</th>
+                <th>@Html.DisplayNameFor(model => model.TblGamesList[0].Winner)</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var game in Model.TblGamesList)
+            {
+                <tr>
+@*                    <td>@game.Id</td>
+*@                  <td>@game.PlayerID</td>
+                    <td>@game.PlayerName</td>
+@*                    <td>@game.GameMoves</td>
+*@                  <td>@game.StartGameTime.ToString("yyyy-MM-dd HH:mm")</td>
+                    <td>@game.GameDuration</td>
+                    <td>@game.Winner</td>
+                    <td>
+                        <a asp-page="./Delete" asp-route-id="@game.Id" asp-route-isUser="@false">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 
-<form action="" method="post">
+
+
+<form method="post">
     <button asp-page="" asp-page-handler="SortByName" class="btn btn-dark" autofocus> Sort by name (case insensitive) </button>
     <br />
     <br />
@@ -132,5 +185,26 @@ else if (Model.CurrentTableFormat == IndexModel.TableFormat.GamesPlayed)
     <button asp-page="" asp-page-handler="ShowFirstPlayersByCountry" class="btn btn-dark"> Show first players by country </button>
     <br />
     <br />
-    <button asp-page="" asp-page-handler="ShowGamesPlayed" class="btn btn-dark"> Show amount of games played by player </button>
+    <button asp-page="" asp-page-handler="ShowGamesPlayedByEachPlayer" class="btn btn-dark"> Show amount of games played by player </button>
+    <br />
+    <br />
+    <button asp-page="" asp-page-handler="GroupPlayersByCountry" class="btn btn-dark">Group Players by Country</button>
+    <br />
+    <br />
+    <button asp-page="" asp-page-handler="SortByGamesPlayed" class="btn btn-dark">Sort Players by Games Played</button>
+    <br /><br />
+    <button asp-page="" asp-page-handler="ShowGamesTable" class="btn btn-dark">Show Games Table</button>
+    <br /><br />
+
+    @*<select asp-for="SelectedPlayerName" asp-items="Model.PlayerNames" class="form-control">
+        <option value="">Select a player</option>
+    </select>
+    <button asp-page-handler="GetGamesByPlayer" class="btn btn-dark">Show Games</button>*@
+</form>
+<form method="post" asp-page-handler="GetGamesByPlayer">
+    <select name="playerName" asp-items="Model.PlayerNames" class="form-control">
+        <option value="">Select a player</option>
+    </select>
+    <br />
+    <button type="submit" class="btn btn-dark">Show Games</button>
 </form>

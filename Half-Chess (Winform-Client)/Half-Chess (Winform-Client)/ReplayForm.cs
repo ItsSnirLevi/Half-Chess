@@ -50,8 +50,6 @@ namespace Half_Chess__Winform_Client_
         {
             InitializeComponent();
 
-            MessageBox.Show(details.Winner);
-
             this.Size = new Size(800, 675);
             this.MinimumSize = new Size(800, 675);
             this.MaximumSize = new Size(800, 675);

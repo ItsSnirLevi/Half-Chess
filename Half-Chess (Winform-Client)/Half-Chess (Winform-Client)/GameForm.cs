@@ -1,9 +1,12 @@
 ﻿using Half_Chess__Winform_Client_.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Drawing;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -56,12 +59,14 @@ namespace Half_Chess__Winform_Client_
 
         private string gameMoves;
         private DateTime startTime;
+        
         public enum Winner
         {
             Client,
             Server,
             Stalemate
         }
+        
         public GameForm(LoginForm f)
         {
             InitializeComponent();
@@ -405,16 +410,6 @@ namespace Half_Chess__Winform_Client_
             remainingTime = form.turnTime;
         }
 
-        async Task SendPlayerIdAsync(string url, int playerId)
-        {
-            HttpResponseMessage response = await client.PostAsJsonAsync(url, playerId);
-
-            if (response.IsSuccessStatusCode)
-            {
-                Console.WriteLine("Player ID sent successfully.");
-            }
-        }
-
         private async void EndGame(int winner)
         {
             gameOver = true;
@@ -441,8 +436,16 @@ namespace Half_Chess__Winform_Client_
                 winner_txt = "Stalemate";
             }
 
+            /*int newId = 1;
+            var maxId = await db.TblGames.MaxAsync(g => (int?)g.Id);
+            if (maxId.HasValue)
+            {
+                newId = maxId.Value + 1; 
+            }*/
+
             var game = new TblGames
             {
+                // Id = newId,
                 PlayerID = form.user.Id,
                 PlayerName = form.user.FirstName,
                 StartGameTime = startTime,
@@ -455,7 +458,7 @@ namespace Half_Chess__Winform_Client_
             db.TblGames.Add(game);
             await db.SaveChangesAsync();
 
-            await SendPlayerIdAsync(PATH + "api/TblUsers/AddGameToPlayer", form.user.Id);
+            await PushClientDbAsync();
 
             using (EndGameDialog endGameDialog = new EndGameDialog(msg))
             {
@@ -469,6 +472,44 @@ namespace Half_Chess__Winform_Client_
                     this.Close(); 
                 }
             }
+        }
+
+        private async Task PushClientDbAsync()
+        {
+            try
+            {
+                // Retrieve data from the client database
+                var clientGames = db.TblGames.ToList();
+
+                if (clientGames.Count == 0)
+                {
+                    MessageBox.Show("No data available in the client database to push.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                // Convert the data to JSON
+                var jsonContent = JsonConvert.SerializeObject(clientGames);
+
+                // Prepare the HTTP request
+                var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+                var response = await client.PostAsync(PATH + "api/TblUsers/PushClientDb", content);
+
+                // Handle the response
+                if (response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("Data successfully pushed to the server.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    var errorMsg = await response.Content.ReadAsStringAsync();
+                    MessageBox.Show($"Failed to push data to the server: {errorMsg}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while pushing data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
         }
 
         private void StartNewGame()

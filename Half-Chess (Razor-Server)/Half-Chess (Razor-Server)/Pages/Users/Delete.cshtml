@@ -8,7 +8,9 @@
 <h1>Delete</h1>
 
 <h3>Are you sure you want to delete this?</h3>
-<div>
+@if (Model.CurrentTableFormat == DeleteModel.DeleteFormat.User)
+{
+<div> 
     <h4>TblUsers</h4>
     <hr />
     <dl class="row">
@@ -46,7 +48,72 @@
     
     <form method="post">
         <input type="hidden" asp-for="TblUsers.Id" />
+        <input type="hidden" name="isUser" value="true" />  
         <input type="submit" value="Delete" class="btn btn-danger" /> |
         <a asp-page="./Index">Back to List</a>
     </form>
 </div>
+}
+else if (Model.CurrentTableFormat == DeleteModel.DeleteFormat.Game) {
+    <div>
+        <h4>TblGames</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.TblGames.Id)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.TblGames.Id)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.TblGames.PlayerID)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.TblGames.PlayerID)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.TblGames.PlayerName)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.TblGames.PlayerName)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.TblGames.StartGameTime)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.TblGames.StartGameTime)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.TblGames.GameDuration)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.TblGames.GameDuration)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.TblGames.GameMoves)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.TblGames.GameMoves)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.TblGames.IsWhite)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.TblGames.IsWhite)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.TblGames.Winner)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.TblGames.Winner)
+            </dd>
+        </dl>
+
+        <form method="post">
+            <input type="hidden" asp-for="TblUsers.Id" />
+            <input type="hidden" name="isUser" value="false" /> 
+            <input type="submit" value="Delete" class="btn btn-danger" /> |
+            <a asp-page="./Index">Back to List</a>
+        </form>
+    </div>
+}
