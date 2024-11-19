@@ -98,6 +98,17 @@ namespace Half_Chess__Razor_Server_.Models
                 AddLinearMoves(validMoves, board, new Point(-1, 1));
                 AddLinearMoves(validMoves, board, new Point(-1, -1));
             }
+            else if (TypeName == "Queen")
+            {
+                AddLinearMoves(validMoves, board, new Point(0, 1));  // Vertical up
+                AddLinearMoves(validMoves, board, new Point(0, -1)); // Vertical down
+                AddLinearMoves(validMoves, board, new Point(1, 0));  // Horizontal right
+                AddLinearMoves(validMoves, board, new Point(-1, 0)); // Horizontal left
+                AddLinearMoves(validMoves, board, new Point(1, 1));  // Diagonal top-right
+                AddLinearMoves(validMoves, board, new Point(1, -1)); // Diagonal bottom-right
+                AddLinearMoves(validMoves, board, new Point(-1, 1)); // Diagonal top-left
+                AddLinearMoves(validMoves, board, new Point(-1, -1)); // Diagonal bottom-left
+            }
             else if (TypeName == "King")
             {
                 Point[] kingMoves = {

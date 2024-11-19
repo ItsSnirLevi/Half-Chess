@@ -9,7 +9,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="PlayerID" Type="int" Nullable="false" />
           <Property Name="PlayerName" Type="char" MaxLength="20" Nullable="false" />
           <Property Name="StartGameTime" Type="datetime" Nullable="false" />
@@ -29,7 +29,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <Property Name="PlayerID" Type="Int32" Nullable="false" />
           <Property Name="StartGameTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="GameDuration" Type="Double" Nullable="false" />

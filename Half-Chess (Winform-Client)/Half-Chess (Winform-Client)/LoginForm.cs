@@ -131,7 +131,7 @@ namespace Half_Chess__Winform_Client_
             }
         }
 
-        private async void GetGameDB()
+        private async Task GetGameDB()
         {
             string gamesApiUrl = "api/TblUsers/GetGames";
             var games = await GetGamesAsync(PATH + gamesApiUrl);
@@ -198,11 +198,11 @@ namespace Half_Chess__Winform_Client_
             isWhite = false;
         }
 
-        private void refresh_button_Click(object sender, EventArgs e)
+        private async void refresh_button_Click(object sender, EventArgs e)
         {
             if (user != null)
             {
-                GetGameDB();
+                await GetGameDB();
                 tblBindingSource.DataSource =
                (from game in db.TblGames
                 where game.PlayerID == user.Id

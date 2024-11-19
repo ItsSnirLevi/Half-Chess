@@ -48,7 +48,6 @@
             this.submit_button = new System.Windows.Forms.Button();
             this.Player_label = new System.Windows.Forms.Label();
             this.refresh_button = new System.Windows.Forms.Button();
-            this.DB_Button = new System.Windows.Forms.Button();
             this.tblBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.ReplayButton = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
@@ -121,6 +120,7 @@
             // Turn_comboBox
             // 
             this.Turn_comboBox.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.Turn_comboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.Turn_comboBox.FormattingEnabled = true;
             this.Turn_comboBox.Items.AddRange(new object[] {
             "10",
@@ -244,17 +244,6 @@
             this.refresh_button.UseVisualStyleBackColor = true;
             this.refresh_button.Click += new System.EventHandler(this.refresh_button_Click);
             // 
-            // DB_Button
-            // 
-            this.DB_Button.Font = new System.Drawing.Font("Rockwell Nova Cond", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DB_Button.Location = new System.Drawing.Point(108, 633);
-            this.DB_Button.Name = "DB_Button";
-            this.DB_Button.Size = new System.Drawing.Size(75, 32);
-            this.DB_Button.TabIndex = 19;
-            this.DB_Button.Text = "DB";
-            this.DB_Button.UseVisualStyleBackColor = true;
-            this.DB_Button.Click += new System.EventHandler(this.DB_Button_Click);
-            // 
             // ReplayButton
             // 
             this.ReplayButton.Font = new System.Drawing.Font("Rockwell Nova Cond", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -273,7 +262,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1045, 690);
             this.Controls.Add(this.ReplayButton);
-            this.Controls.Add(this.DB_Button);
             this.Controls.Add(this.refresh_button);
             this.Controls.Add(this.Player_label);
             this.Controls.Add(this.submit_button);
@@ -289,6 +277,7 @@
             this.Controls.Add(this.signIn_textBox);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.WelcomeLabel);
+            this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "LoginForm";
@@ -324,7 +313,6 @@
         private System.Windows.Forms.BindingSource tblBindingSource;
         private System.Windows.Forms.Label Player_label;
         private System.Windows.Forms.Button refresh_button;
-        private System.Windows.Forms.Button DB_Button;
         private System.Windows.Forms.Button ReplayButton;
     }
 }

@@ -35,6 +35,7 @@
             this.CountryLabel = new System.Windows.Forms.Label();
             this.drawBtn = new System.Windows.Forms.Button();
             this.clearBtn = new System.Windows.Forms.Button();
+            this.ForfeitBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // IDLabel
@@ -84,7 +85,7 @@
             this.drawBtn.Name = "drawBtn";
             this.drawBtn.Size = new System.Drawing.Size(100, 36);
             this.drawBtn.TabIndex = 4;
-            this.drawBtn.Text = "Draw";
+            this.drawBtn.Text = "Sketch";
             this.drawBtn.UseVisualStyleBackColor = true;
             // 
             // clearBtn
@@ -97,11 +98,23 @@
             this.clearBtn.Text = "Clear";
             this.clearBtn.UseVisualStyleBackColor = true;
             // 
+            // ForfeitBtn
+            // 
+            this.ForfeitBtn.Font = new System.Drawing.Font("Rockwell Nova Cond", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ForfeitBtn.Location = new System.Drawing.Point(819, 477);
+            this.ForfeitBtn.Name = "ForfeitBtn";
+            this.ForfeitBtn.Size = new System.Drawing.Size(100, 36);
+            this.ForfeitBtn.TabIndex = 6;
+            this.ForfeitBtn.Text = "Forfeit";
+            this.ForfeitBtn.UseVisualStyleBackColor = true;
+            this.ForfeitBtn.Click += new System.EventHandler(this.ForfeitBtn_Click);
+            // 
             // GameForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1045, 783);
+            this.Controls.Add(this.ForfeitBtn);
             this.Controls.Add(this.clearBtn);
             this.Controls.Add(this.drawBtn);
             this.Controls.Add(this.CountryLabel);
@@ -126,5 +139,6 @@
         private System.Windows.Forms.Label CountryLabel;
         private System.Windows.Forms.Button drawBtn;
         private System.Windows.Forms.Button clearBtn;
+        private System.Windows.Forms.Button ForfeitBtn;
     }
 }

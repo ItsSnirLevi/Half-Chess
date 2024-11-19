@@ -11,8 +11,8 @@ namespace Half_Chess__Winform_Client_.Models
 {
     public class ChessPiece
     {
-        // ♔ ♖ ♘ ♗ ♙ - white pieces
-        // ♚ ♜ ♞ ♝ ♟ - black pieces
+        // ♔ ♕ ♖ ♘ ♗ ♙ - white pieces
+        // ♚ ♛ ♜ ♞ ♝ ♟ - black pieces
 
         public enum ChessColor
         {
@@ -36,11 +36,13 @@ namespace Half_Chess__Winform_Client_.Models
             TypeName = typeName;    
         }
 
-        public void DrawPiece(Graphics g, Rectangle[,] boardCells)
+        public void DrawPiece(Graphics g, Rectangle[,] boardCells, Rectangle? customCell = null)
         {
+            Rectangle cell = customCell ?? boardCells[Y, X];
+
             using (Brush brush = new SolidBrush(Color.Black))
             {
-                Rectangle cell = boardCells[Y, X];
+                // Rectangle cell = boardCells[Y, X];
                 cell.Y += 10;
                 g.DrawString(Type.Substring(0, 1), new Font("Arial", 40),
                              brush, cell.Location);
@@ -118,6 +120,17 @@ namespace Half_Chess__Winform_Client_.Models
                 AddLinearMoves(validMoves, board, new Point(1, -1));
                 AddLinearMoves(validMoves, board, new Point(-1, 1));
                 AddLinearMoves(validMoves, board, new Point(-1, -1));
+            }
+            else if (TypeName == "Queen")
+            {
+                AddLinearMoves(validMoves, board, new Point(0, 1));  // Vertical up
+                AddLinearMoves(validMoves, board, new Point(0, -1)); // Vertical down
+                AddLinearMoves(validMoves, board, new Point(1, 0));  // Horizontal right
+                AddLinearMoves(validMoves, board, new Point(-1, 0)); // Horizontal left
+                AddLinearMoves(validMoves, board, new Point(1, 1));  // Diagonal top-right
+                AddLinearMoves(validMoves, board, new Point(1, -1)); // Diagonal bottom-right
+                AddLinearMoves(validMoves, board, new Point(-1, 1)); // Diagonal top-left
+                AddLinearMoves(validMoves, board, new Point(-1, -1)); // Diagonal bottom-left
             }
             else if (TypeName == "King")
             {
@@ -242,6 +255,21 @@ namespace Half_Chess__Winform_Client_.Models
                     }
                 }
             }
+            return false;
+        }
+
+        public bool CanPromote(bool isClient)
+        {
+            if (TypeName == "Pawn" && isClient)
+            {
+                return Y == 0;  // Top row for client's pawns
+            }
+
+            if (TypeName == "Pawn" && !isClient)
+            {
+                return Y == 7;  // Bottom row for server's pawns
+            }
+
             return false;
         }
 

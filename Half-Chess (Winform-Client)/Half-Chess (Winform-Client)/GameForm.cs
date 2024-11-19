@@ -59,7 +59,14 @@ namespace Half_Chess__Winform_Client_
 
         private string gameMoves;
         private DateTime startTime;
-        
+
+        private Point lastOrigin = Point.Empty;
+        private Point lastTarget = Point.Empty;
+
+        private Timer pieceAnimationTimer;
+        private int animationOffset = 0;
+        private int animationDirection = 1;
+
         public enum Winner
         {
             Client,
@@ -131,6 +138,11 @@ namespace Half_Chess__Winform_Client_
 
             gameMoves = "";
             startTime = DateTime.Now;
+
+            pieceAnimationTimer = new Timer();
+            pieceAnimationTimer.Interval = 100; 
+            pieceAnimationTimer.Tick += PieceAnimationTimer_Tick;
+            pieceAnimationTimer.Start();
         }
 
         private void GameForm_Load(object sender, EventArgs e)
@@ -167,7 +179,13 @@ namespace Half_Chess__Winform_Client_
                     {
                         g.FillRectangle(new SolidBrush(Color.LightGreen), cell);
                         g.DrawRectangle(new Pen(Color.Black, 1), cell);
-                    } else
+                    }
+                    else if (lastOrigin != Point.Empty && (lastOrigin == new Point(j, i) || lastTarget == new Point(j, i)))
+                    {
+                        g.FillRectangle(new SolidBrush(Color.Gold), cell);
+                        g.DrawRectangle(new Pen(Color.Black, 1), cell);
+                    }
+                    else
                     {
                         tileCurrentColor = (i + j) % 2 == 0 ? Color.AntiqueWhite : Color.DarkKhaki;
                         g.FillRectangle(new SolidBrush(tileCurrentColor), boardCells[i, j]);
@@ -249,7 +267,7 @@ namespace Half_Chess__Winform_Client_
             }
         }
         
-        protected override void OnMouseClick(MouseEventArgs e)
+        protected async override void OnMouseClick(MouseEventArgs e)
         {
             if (isDrawing || !myTurn || gameOver) return;
 
@@ -295,13 +313,13 @@ namespace Half_Chess__Winform_Client_
                     
                     ChangeTurn();
                     if (!gameOver)
-                        ServerPlay();
+                        await ServerPlay();
 
                     if (isMyKingInCheck && IsCheckmate(myColor))
                     {
                         EndGame((int)Winner.Server);
                     }
-                    else if (!isOppKingInCheck && IsStalemate(myColor))
+                    else if (!isMyKingInCheck && IsStalemate(myColor))
                     {
                         EndGame((int)Winner.Stalemate);
                     }
@@ -368,18 +386,25 @@ namespace Half_Chess__Winform_Client_
         {
             gameMoves += $"{selectedPiece.X}{selectedPiece.Y}{target.X}{target.Y} ";
 
+            lastOrigin = new Point(selectedPiece.X, selectedPiece.Y);
+            lastTarget = target;
+
             CapturePiece(target.X, target.Y);
             boardPieces[selectedPiece.Y, selectedPiece.X] = null;
             selectedPiece.X = target.X;
             selectedPiece.Y = target.Y;
             boardPieces[selectedPiece.Y, selectedPiece.X] = selectedPiece;
 
+            if (selectedPiece.CanPromote(true))
+            {
+                PromotePawn(selectedPiece);
+            }
+
             if (selectedPiece.TypeName == "King")
             {
                 myKingPosition = new Point(selectedPiece.X, selectedPiece.Y);
                 myKingBlinkPosition = myKingPosition;
             }
-
 
             selectedPiece = null;
             validMoves.Clear();
@@ -396,12 +421,42 @@ namespace Half_Chess__Winform_Client_
             selectedPiece.Y = target.Y;
             boardPieces[target.Y, target.X] = selectedPiece;
 
+            if (selectedPiece.CanPromote(false))
+            {
+                PromotePawn(selectedPiece);
+            }
+
             if (selectedPiece.TypeName == "King")
             {
                 oppKingPosition = new Point(selectedPiece.X, selectedPiece.Y);
             }
+            lastOrigin = new Point(origin.X, origin.Y);
+            lastTarget = new Point(target.X, target.Y);
 
             selectedPiece = null;
+        }
+
+        private void PromotePawn(ChessPiece pawn)
+        {
+            // Remove the pawn from the pieces list
+            // pieces.Remove(pawn);
+
+            // Create a new queen
+            ChessPiece promotedQueen = new ChessPiece(
+                pawn.PieceColor == ChessPiece.ChessColor.White ? "♕" : "♛",
+                pawn.PieceColor,
+                pawn.X,
+                pawn.Y,
+                "Queen"
+            );
+
+            // Add the new queen to the pieces list
+            pieces.Add(promotedQueen);
+
+            // Update the board pieces
+            boardPieces[pawn.Y, pawn.X] = promotedQueen;
+
+            selectedPiece = promotedQueen;
         }
 
         private void ChangeTurn()
@@ -436,16 +491,9 @@ namespace Half_Chess__Winform_Client_
                 winner_txt = "Stalemate";
             }
 
-            /*int newId = 1;
-            var maxId = await db.TblGames.MaxAsync(g => (int?)g.Id);
-            if (maxId.HasValue)
-            {
-                newId = maxId.Value + 1; 
-            }*/
-
             var game = new TblGames
             {
-                // Id = newId,
+                Id = 0,
                 PlayerID = form.user.Id,
                 PlayerName = form.user.FirstName,
                 StartGameTime = startTime,
@@ -455,10 +503,10 @@ namespace Half_Chess__Winform_Client_
                 Winner = winner_txt
             };
 
-            db.TblGames.Add(game);
-            await db.SaveChangesAsync();
+            //db.TblGames.Add(game);
+            //await db.SaveChangesAsync();
 
-            await PushClientDbAsync();
+            await PushClientDbAsync(game);
 
             using (EndGameDialog endGameDialog = new EndGameDialog(msg))
             {
@@ -474,42 +522,38 @@ namespace Half_Chess__Winform_Client_
             }
         }
 
-        private async Task PushClientDbAsync()
+        private async Task PushClientDbAsync(TblGames latestGame)
         {
             try
             {
-                // Retrieve data from the client database
-                var clientGames = db.TblGames.ToList();
-
-                if (clientGames.Count == 0)
+                if (latestGame == null)
                 {
-                    MessageBox.Show("No data available in the client database to push.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("No game data to push.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
 
                 // Convert the data to JSON
-                var jsonContent = JsonConvert.SerializeObject(clientGames);
+                var jsonContent = JsonConvert.SerializeObject(latestGame);
 
                 // Prepare the HTTP request
                 var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-                var response = await client.PostAsync(PATH + "api/TblUsers/PushClientDb", content);
+                var response = await client.PostAsync(PATH + "api/TblUsers/PushGame", content);
 
                 // Handle the response
                 if (response.IsSuccessStatusCode)
                 {
-                    MessageBox.Show("Data successfully pushed to the server.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    // MessageBox.Show("Game data successfully pushed to the server.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                 {
                     var errorMsg = await response.Content.ReadAsStringAsync();
-                    MessageBox.Show($"Failed to push data to the server: {errorMsg}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Failed to push game data to the server: {errorMsg}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"An error occurred while pushing data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"An error occurred while pushing game data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
         }
 
         private void StartNewGame()
@@ -519,7 +563,7 @@ namespace Half_Chess__Winform_Client_
             newGameForm.Show();
         }
 
-        private async void ServerPlay()
+        private async Task ServerPlay()
         {
             List<CustomPoint> move = await GetMovesAsync(PATH + "api/ChessGame");
             ServerMoveTo(move[0], move[1]);
@@ -598,6 +642,32 @@ namespace Half_Chess__Winform_Client_
 
         private bool IsStalemate(ChessPiece.ChessColor playerColor)
         {
+            // Count pieces
+            int totalPieces = 0, bishops = 0, knights = 0;
+
+            foreach (ChessPiece piece in boardPieces)
+            {
+                if (piece != null)
+                {
+                    totalPieces++;
+                    switch (piece.TypeName)
+                    {
+                        case "Bishop": bishops++; break;
+                        case "Knight": knights++; break;
+                    }
+                }
+            }
+
+            // Insufficient mating material scenarios:
+            // 1. King vs King
+            // 2. King + Bishop vs King
+            // 3. King + Knight vs King
+            if (totalPieces == 2 || // King vs King
+                (totalPieces == 3 && (bishops == 1 || knights == 1))) // King + Bishop/Knight vs King)
+            {
+                return true;
+            }
+
             bool isClient = playerColor == myColor;
 
             foreach (ChessPiece piece in boardPieces)
@@ -703,6 +773,23 @@ namespace Half_Chess__Winform_Client_
             }
         }
 
+        private void PieceAnimationTimer_Tick(object sender, EventArgs e)
+        {
+            if (selectedPiece != null)
+            {
+                // Change animation offset
+                animationOffset += 2 * animationDirection;
+
+                // Reverse direction when it reaches certain limits
+                if (Math.Abs(animationOffset) > 5)
+                {
+                    animationDirection *= -1;
+                }
+
+                Invalidate();
+            }
+        }
+
         protected override void OnMouseUp(MouseEventArgs e)
         {
             if (isDrawing && e.Button == MouseButtons.Left)
@@ -731,8 +818,22 @@ namespace Half_Chess__Winform_Client_
             DrawBoard(g);
             // Draw pieces
             foreach (ChessPiece piece in boardPieces)
+            {
                 if (piece != null)
-                    piece.DrawPiece(g, boardCells);
+                {
+                    if (piece == selectedPiece)
+                    {
+                        // Slightly offset the selected piece
+                        Rectangle offsetCell = boardCells[piece.Y, piece.X];
+                        offsetCell.Offset(0, animationOffset);
+                        piece.DrawPiece(g, boardCells, offsetCell);
+                    }
+                    else
+                    {
+                        piece.DrawPiece(g, boardCells);
+                    }
+                }
+            }
 
             g.DrawImage(canvas, Point.Empty);
 
@@ -747,6 +848,12 @@ namespace Half_Chess__Winform_Client_
         {
             turnTimer.Stop();
             checkBlinkTimer.Stop();
+            pieceAnimationTimer.Stop();
+        }
+
+        private void ForfeitBtn_Click(object sender, EventArgs e)
+        {
+            EndGame((int)Winner.Server);
         }
     }
 }
