@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ReplayForm));
             this.StartButton = new System.Windows.Forms.Button();
             this.IDLabel = new System.Windows.Forms.Label();
             this.NameLabel = new System.Windows.Forms.Label();
@@ -39,19 +40,21 @@
             // 
             // StartButton
             // 
+            this.StartButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
             this.StartButton.Font = new System.Drawing.Font("Rockwell Nova Cond", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.StartButton.Location = new System.Drawing.Point(12, 339);
             this.StartButton.Name = "StartButton";
             this.StartButton.Size = new System.Drawing.Size(226, 99);
             this.StartButton.TabIndex = 0;
             this.StartButton.Text = "Start";
-            this.StartButton.UseVisualStyleBackColor = true;
+            this.StartButton.UseVisualStyleBackColor = false;
             this.StartButton.Click += new System.EventHandler(this.StartButton_Click);
             // 
             // IDLabel
             // 
             this.IDLabel.AutoSize = true;
             this.IDLabel.Font = new System.Drawing.Font("Rockwell Nova Cond", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.IDLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
             this.IDLabel.Location = new System.Drawing.Point(12, 9);
             this.IDLabel.Name = "IDLabel";
             this.IDLabel.Size = new System.Drawing.Size(58, 31);
@@ -62,6 +65,7 @@
             // 
             this.NameLabel.AutoSize = true;
             this.NameLabel.Font = new System.Drawing.Font("Rockwell Nova Cond", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.NameLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
             this.NameLabel.Location = new System.Drawing.Point(12, 39);
             this.NameLabel.Name = "NameLabel";
             this.NameLabel.Size = new System.Drawing.Size(58, 31);
@@ -72,6 +76,7 @@
             // 
             this.TimeLabel.AutoSize = true;
             this.TimeLabel.Font = new System.Drawing.Font("Rockwell Nova Cond", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TimeLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
             this.TimeLabel.Location = new System.Drawing.Point(12, 69);
             this.TimeLabel.Name = "TimeLabel";
             this.TimeLabel.Size = new System.Drawing.Size(58, 31);
@@ -82,6 +87,7 @@
             // 
             this.WinnerLabel.AutoSize = true;
             this.WinnerLabel.Font = new System.Drawing.Font("Rockwell Nova Cond", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.WinnerLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
             this.WinnerLabel.Location = new System.Drawing.Point(12, 129);
             this.WinnerLabel.Name = "WinnerLabel";
             this.WinnerLabel.Size = new System.Drawing.Size(58, 31);
@@ -92,6 +98,7 @@
             // 
             this.DurLabel.AutoSize = true;
             this.DurLabel.Font = new System.Drawing.Font("Rockwell Nova Cond", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DurLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
             this.DurLabel.Location = new System.Drawing.Point(12, 98);
             this.DurLabel.Name = "DurLabel";
             this.DurLabel.Size = new System.Drawing.Size(58, 31);
@@ -101,6 +108,7 @@
             // EndLabel
             // 
             this.EndLabel.AutoSize = true;
+            this.EndLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
             this.EndLabel.Font = new System.Drawing.Font("Rockwell Nova Cond", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.EndLabel.Location = new System.Drawing.Point(770, 339);
             this.EndLabel.Name = "EndLabel";
@@ -112,6 +120,7 @@
             this.AcceptButton = this.StartButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(40)))), ((int)(((byte)(49)))));
             this.ClientSize = new System.Drawing.Size(782, 628);
             this.Controls.Add(this.EndLabel);
             this.Controls.Add(this.DurLabel);
@@ -120,8 +129,9 @@
             this.Controls.Add(this.NameLabel);
             this.Controls.Add(this.IDLabel);
             this.Controls.Add(this.StartButton);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ReplayForm";
-            this.Text = "ReplayForm";
+            this.Text = "Half Chess";
             this.Load += new System.EventHandler(this.ReplayForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

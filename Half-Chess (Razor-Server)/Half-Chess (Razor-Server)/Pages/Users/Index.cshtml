@@ -5,7 +5,7 @@
     ViewData["Title"] = "D&Q";
 }
 
-<h1>Data & Queries</h1>
+<h2>Data</h2>
 
 @if (Model.CurrentTableFormat == IndexModel.TableFormat.FullTable)
 {
@@ -173,38 +173,24 @@ else if (Model.CurrentTableFormat == IndexModel.TableFormat.ShowGamesTable)
     </table>
 }
 
+<div class="container my-4">
+    <h2>Queries</h2>
+    <form method="post">
+        <div class="btn-group d-flex flex-wrap" role="group">
+            <button asp-page="" asp-page-handler="SortByName" class="btn btn-dark mx-1 btn-custom">Sort by Name</button>
+            <button asp-page="" asp-page-handler="ShowLastPlayed" class="btn btn-dark mx-1 btn-custom">Players' Last Game</button>
+            <button asp-page="" asp-page-handler="ShowFirstPlayersByCountry" class="btn btn-dark mx-1 btn-custom">Players by Country</button>
+            <button asp-page="" asp-page-handler="ShowGamesPlayedByEachPlayer" class="btn btn-dark mx-1 btn-custom">Games Played</button>
+            <button asp-page="" asp-page-handler="GroupPlayersByCountry" class="btn btn-dark mx-1 btn-custom">Group by Country</button>
+            <button asp-page="" asp-page-handler="SortByGamesPlayed" class="btn btn-dark mx-1 btn-custom">Sort by Games Played</button>
+            <button asp-page="" asp-page-handler="ShowGamesTable" class="btn btn-dark mx-1 btn-custom">Show Games Table</button>
+        </div>
+    </form>
 
-
-<form method="post">
-    <button asp-page="" asp-page-handler="SortByName" class="btn btn-dark" autofocus> Sort by name (case insensitive) </button>
-    <br />
-    <br />
-    <button asp-page="" asp-page-handler="ShowLastPlayed" class="btn btn-dark"> Players last game time </button>
-    <br />
-    <br />
-    <button asp-page="" asp-page-handler="ShowFirstPlayersByCountry" class="btn btn-dark"> Show first players by country </button>
-    <br />
-    <br />
-    <button asp-page="" asp-page-handler="ShowGamesPlayedByEachPlayer" class="btn btn-dark"> Show amount of games played by player </button>
-    <br />
-    <br />
-    <button asp-page="" asp-page-handler="GroupPlayersByCountry" class="btn btn-dark">Group Players by Country</button>
-    <br />
-    <br />
-    <button asp-page="" asp-page-handler="SortByGamesPlayed" class="btn btn-dark">Sort Players by Games Played</button>
-    <br /><br />
-    <button asp-page="" asp-page-handler="ShowGamesTable" class="btn btn-dark">Show Games Table</button>
-    <br /><br />
-
-    @*<select asp-for="SelectedPlayerName" asp-items="Model.PlayerNames" class="form-control">
-        <option value="">Select a player</option>
-    </select>
-    <button asp-page-handler="GetGamesByPlayer" class="btn btn-dark">Show Games</button>*@
-</form>
-<form method="post" asp-page-handler="GetGamesByPlayer">
-    <select name="playerName" asp-items="Model.PlayerNames" class="form-control">
-        <option value="">Select a player</option>
-    </select>
-    <br />
-    <button type="submit" class="btn btn-dark">Show Games</button>
-</form>
+    <form method="post" asp-page-handler="GetGamesByPlayer" class="d-flex align-items-center mt-3">
+        <select name="playerName" asp-items="Model.PlayerNames" class="form-control small-combo-box">
+            <option value="">Select a player</option>
+        </select>
+        <button type="submit" class="btn btn-dark ms-2 btn-custom">Show Games</button>
+    </form>
+</div>

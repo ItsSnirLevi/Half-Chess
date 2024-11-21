@@ -32,10 +32,8 @@ namespace Half_Chess__Winform_Client_
             InitializeComponent();
             this.Size = new Size(800, 600); 
             this.MinimumSize = new Size(800, 600); 
-            this.MaximumSize = new Size(1024, 768);
+            this.MaximumSize = new Size(800, 600);
             Turn_comboBox.SelectedIndex = 1;
-            
-            GetGameDB();
         }
 
         private void LoginForm_Load(object sender, EventArgs e)
@@ -116,7 +114,7 @@ namespace Half_Chess__Winform_Client_
             else
             {
                 Player_label.Text = "Welcome, " + user.FirstName;
-
+                await GetGameDB();
                 tblBindingSource.DataSource =
                         (from game in db.TblGames
                          where game.PlayerID == user.Id

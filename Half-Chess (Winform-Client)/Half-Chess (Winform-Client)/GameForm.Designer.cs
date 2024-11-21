@@ -42,6 +42,7 @@
             // 
             this.IDLabel.AutoSize = true;
             this.IDLabel.Font = new System.Drawing.Font("Rockwell Nova Cond", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.IDLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
             this.IDLabel.Location = new System.Drawing.Point(15, 31);
             this.IDLabel.Name = "IDLabel";
             this.IDLabel.Size = new System.Drawing.Size(84, 47);
@@ -52,6 +53,7 @@
             // 
             this.TimerLabel.AutoSize = true;
             this.TimerLabel.Font = new System.Drawing.Font("Rockwell Nova Cond", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TimerLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
             this.TimerLabel.Location = new System.Drawing.Point(805, 351);
             this.TimerLabel.Name = "TimerLabel";
             this.TimerLabel.Size = new System.Drawing.Size(147, 80);
@@ -62,6 +64,7 @@
             // 
             this.NameLabel.AutoSize = true;
             this.NameLabel.Font = new System.Drawing.Font("Rockwell Nova Cond", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.NameLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
             this.NameLabel.Location = new System.Drawing.Point(15, 75);
             this.NameLabel.Name = "NameLabel";
             this.NameLabel.Size = new System.Drawing.Size(84, 47);
@@ -72,6 +75,7 @@
             // 
             this.CountryLabel.AutoSize = true;
             this.CountryLabel.Font = new System.Drawing.Font("Rockwell Nova Cond", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CountryLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
             this.CountryLabel.Location = new System.Drawing.Point(15, 119);
             this.CountryLabel.Name = "CountryLabel";
             this.CountryLabel.Size = new System.Drawing.Size(84, 47);
@@ -80,39 +84,43 @@
             // 
             // drawBtn
             // 
+            this.drawBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
             this.drawBtn.Font = new System.Drawing.Font("Rockwell Nova Cond", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.drawBtn.Location = new System.Drawing.Point(12, 213);
             this.drawBtn.Name = "drawBtn";
             this.drawBtn.Size = new System.Drawing.Size(100, 36);
             this.drawBtn.TabIndex = 4;
             this.drawBtn.Text = "Sketch";
-            this.drawBtn.UseVisualStyleBackColor = true;
+            this.drawBtn.UseVisualStyleBackColor = false;
             // 
             // clearBtn
             // 
+            this.clearBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
             this.clearBtn.Font = new System.Drawing.Font("Rockwell Nova Cond", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.clearBtn.Location = new System.Drawing.Point(12, 264);
             this.clearBtn.Name = "clearBtn";
             this.clearBtn.Size = new System.Drawing.Size(100, 36);
             this.clearBtn.TabIndex = 5;
             this.clearBtn.Text = "Clear";
-            this.clearBtn.UseVisualStyleBackColor = true;
+            this.clearBtn.UseVisualStyleBackColor = false;
             // 
             // ForfeitBtn
             // 
+            this.ForfeitBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
             this.ForfeitBtn.Font = new System.Drawing.Font("Rockwell Nova Cond", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ForfeitBtn.Location = new System.Drawing.Point(819, 477);
             this.ForfeitBtn.Name = "ForfeitBtn";
             this.ForfeitBtn.Size = new System.Drawing.Size(100, 36);
             this.ForfeitBtn.TabIndex = 6;
             this.ForfeitBtn.Text = "Forfeit";
-            this.ForfeitBtn.UseVisualStyleBackColor = true;
+            this.ForfeitBtn.UseVisualStyleBackColor = false;
             this.ForfeitBtn.Click += new System.EventHandler(this.ForfeitBtn_Click);
             // 
             // GameForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(40)))), ((int)(((byte)(49)))));
             this.ClientSize = new System.Drawing.Size(1045, 783);
             this.Controls.Add(this.ForfeitBtn);
             this.Controls.Add(this.clearBtn);

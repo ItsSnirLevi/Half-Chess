@@ -29,3 +29,16 @@ body {
 .free-ids-list span {
     display: inline-block;
 }
+
+.btn-custom {
+    font-size: 16px; 
+    padding: 6px 12px; 
+    margin: 1px; 
+    border-radius: 4px; 
+}
+
+.small-combo-box {
+    max-width: 200px; 
+    padding: 4px; 
+    font-size: 14px; 
+}

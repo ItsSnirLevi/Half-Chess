@@ -127,6 +127,7 @@ namespace Half_Chess__Winform_Client_
             {
                 isDrawing = true;
                 clearBtn.Enabled = true;
+                drawBtn.Enabled = false;
             };
             clearBtn.Click += (s, e) => ClearDrawing();
             clearBtn.Enabled = false;
@@ -806,6 +807,7 @@ namespace Half_Chess__Winform_Client_
             }
             isDrawing = false;
             clearBtn.Enabled = false;
+            drawBtn.Enabled = true;
             Invalidate(); // Request form repaint
         }
 
