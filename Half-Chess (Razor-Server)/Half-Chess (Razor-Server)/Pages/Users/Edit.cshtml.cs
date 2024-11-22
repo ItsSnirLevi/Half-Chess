@@ -23,6 +23,16 @@ namespace Half_Chess__Razor_Server_.Pages.Users
         [BindProperty]
         public TblUsers TblUsers { get; set; } = default!;
 
+        [BindProperty]
+        public List<SelectListItem> CountryOptions { get; set; } = new List<SelectListItem>
+        {
+            new SelectListItem { Value = "USA", Text = "United States" },
+            new SelectListItem { Value = "IL", Text = "Israel" },
+            new SelectListItem { Value = "GB", Text = "United Kingdom" },
+            new SelectListItem { Value = "AU", Text = "Australia" },
+            new SelectListItem { Value = "DE", Text = "Germany" }
+        };
+
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null || _context.TblUsers == null)

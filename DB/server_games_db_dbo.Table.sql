@@ -1,5 +1,5 @@
 ﻿CREATE TABLE [dbo].[TblGames] (
-    [Id]            INT        NOT NULL,
+    [Id]            INT        IDENTITY (1, 1) NOT NULL,
     [PlayerID]      INT        NOT NULL,
     [PlayerName]    CHAR (20)  NOT NULL,
     [StartGameTime] DATETIME   NOT NULL,

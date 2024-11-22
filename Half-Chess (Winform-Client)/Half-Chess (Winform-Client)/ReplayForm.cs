@@ -44,7 +44,10 @@ namespace Half_Chess__Winform_Client_
         private string moves;
         private bool isWhite;
 
-        TblGames details;
+        // TblGames details;
+
+        private Point lastOrigin = Point.Empty;
+        private Point lastTarget = Point.Empty;
 
         public ReplayForm(TblGames details)
         {
@@ -55,7 +58,7 @@ namespace Half_Chess__Winform_Client_
             this.MaximumSize = new Size(800, 675);
             this.StartPosition = FormStartPosition.CenterParent;
 
-            this.details = details;
+            // this.details = details;
             this.moves = details.GameMoves;
             this.isWhite = details.IsWhite;
 
@@ -66,7 +69,7 @@ namespace Half_Chess__Winform_Client_
             WinnerLabel.Text = "Winner: " + details.Winner;
 
             replayTimer = new Timer();
-            replayTimer.Interval = 1000; 
+            replayTimer.Interval = 1250; 
             replayTimer.Tick += ReplayTimer_Tick;
 
             if (isWhite)
@@ -120,6 +123,11 @@ namespace Half_Chess__Winform_Client_
                             g.FillRectangle(new SolidBrush(Color.Red), cell);
                         else
                             g.FillRectangle(new SolidBrush(Color.PaleVioletRed), cell);
+                    }
+                    else if (lastOrigin != Point.Empty && (lastOrigin == new Point(j, i) || lastTarget == new Point(j, i)))
+                    {
+                        g.FillRectangle(new SolidBrush(Color.Gold), cell);
+                        g.DrawRectangle(new Pen(Color.Black, 1), cell);
                     }
                     else
                     {
@@ -285,14 +293,22 @@ namespace Half_Chess__Winform_Client_
         }
 
         private void MoveTo(CustomPoint origin, CustomPoint target)
-        {
+        {  
             selectedPiece = boardPieces[origin.Y, origin.X];
+
+            lastOrigin = new Point(selectedPiece.X, selectedPiece.Y);
+            lastTarget = new Point(target.X, target.Y);
 
             CapturePiece(target.X, target.Y);
             boardPieces[selectedPiece.Y, selectedPiece.X] = null;
             selectedPiece.X = target.X;
             selectedPiece.Y = target.Y;
             boardPieces[selectedPiece.Y, selectedPiece.X] = selectedPiece;
+
+            if (selectedPiece.CanPromote(true))
+            {
+                PromotePawn(selectedPiece);
+            }
 
             if (selectedPiece.TypeName == "King")
             {
@@ -313,12 +329,42 @@ namespace Half_Chess__Winform_Client_
             selectedPiece.Y = target.Y;
             boardPieces[target.Y, target.X] = selectedPiece;
 
+            if (selectedPiece.CanPromote(false))
+            {
+                PromotePawn(selectedPiece);
+            }
+
             if (selectedPiece.TypeName == "King")
             {
                 oppKingPosition = new Point(selectedPiece.X, selectedPiece.Y);
             }
+            lastOrigin = new Point(origin.X, origin.Y);
+            lastTarget = new Point(target.X, target.Y);
 
             selectedPiece = null;
+        }
+
+        private void PromotePawn(ChessPiece pawn)
+        {
+            // Remove the pawn from the pieces list
+            // pieces.Remove(pawn);
+
+            // Create a new queen
+            ChessPiece promotedQueen = new ChessPiece(
+                pawn.PieceColor == ChessPiece.ChessColor.White ? "♕" : "♛",
+                pawn.PieceColor,
+                pawn.X,
+                pawn.Y,
+                "Queen"
+            );
+
+            // Add the new queen to the pieces list
+            pieces.Add(promotedQueen);
+
+            // Update the board pieces
+            boardPieces[pawn.Y, pawn.X] = promotedQueen;
+
+            selectedPiece = promotedQueen;
         }
 
         private void CapturePiece(int X, int Y)

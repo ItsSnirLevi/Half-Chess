@@ -108,8 +108,9 @@
             // EndLabel
             // 
             this.EndLabel.AutoSize = true;
-            this.EndLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
+            this.EndLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(40)))), ((int)(((byte)(49)))));
             this.EndLabel.Font = new System.Drawing.Font("Rockwell Nova Cond", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.EndLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
             this.EndLabel.Location = new System.Drawing.Point(770, 339);
             this.EndLabel.Name = "EndLabel";
             this.EndLabel.Size = new System.Drawing.Size(0, 80);

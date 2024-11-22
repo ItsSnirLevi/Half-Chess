@@ -64,38 +64,6 @@ namespace Half_Chess__Winform_Client_
             return response.IsSuccessStatusCode;
         }
 
-        //private async void submit_button_Click(object sender, EventArgs e)
-        //{
-        //    string playerId = signIn_textBox.Text;
-        //    if (playerId.Length == 0)
-        //        return;
-
-        //    string toUser = "api/TblUsers/" + signIn_textBox.Text;
-        //    user = await GetUserAsync(PATH + toUser);
-
-        //    if (user == null)
-        //    {
-        //        MessageBox.Show("Please register at our website before trying to sign in!", "User ID Does Not Exist",
-        //                        MessageBoxButtons.OK,
-        //                        MessageBoxIcon.Warning);
-        //    } else
-        //    {
-        //        Player_label.Text = "Welcome, " + user.FirstName;
-
-        //        tblBindingSource.DataSource =
-        //        (from game in db.TblGames
-        //         where game.PlayerID == user.Id 
-        //         select new
-        //         {
-        //             GameID = game.Id,     
-        //             GameTime = game.StartGameTime,     
-        //             Duration = game.GameDuration,           
-        //             Winner = game.Winner                    
-        //         }).ToList();
-        //        tblDataGridView.DataSource = tblBindingSource;
-        //    }
-        //}
-
         private async void submit_button_Click(object sender, EventArgs e)
         {
             string playerId = signIn_textBox.Text;
@@ -114,10 +82,11 @@ namespace Half_Chess__Winform_Client_
             else
             {
                 Player_label.Text = "Welcome, " + user.FirstName;
-                await GetGameDB();
+                // await GetGameDB();
+                await GetUserGames(user.Id);
                 tblBindingSource.DataSource =
                         (from game in db.TblGames
-                         where game.PlayerID == user.Id
+                         // where game.PlayerID == user.Id
                          select new
                          {
                              GameID = game.Id,
@@ -129,9 +98,39 @@ namespace Half_Chess__Winform_Client_
             }
         }
 
-        private async Task GetGameDB()
+        //private async Task GetGameDB()
+        //{
+        //    string gamesApiUrl = "api/TblUsers/GetGames";
+        //    var games = await GetGamesAsync(PATH + gamesApiUrl);
+
+        //    if (games != null)
+        //    {
+        //        // Reset TblGames: Remove existing records
+        //        db.TblGames.RemoveRange(db.TblGames);
+        //        await db.SaveChangesAsync();
+
+        //        foreach (var game in games)
+        //        {
+        //            db.TblGames.Add(new TblGames
+        //            {        
+        //                Id = game.Id,
+        //                PlayerID = game.PlayerID,
+        //                PlayerName = game.PlayerName,
+        //                StartGameTime = game.StartGameTime,
+        //                GameDuration = game.GameDuration,
+        //                GameMoves = game.GameMoves,
+        //                IsWhite = game.IsWhite,
+        //                Winner = game.Winner
+        //            }) ;
+        //        }
+
+        //        await db.SaveChangesAsync();
+        //    }
+        //}
+
+        private async Task GetUserGames(int playerId)
         {
-            string gamesApiUrl = "api/TblUsers/GetGames";
+            string gamesApiUrl = $"api/TblUsers/GetGamesByPlayer/{playerId}";
             var games = await GetGamesAsync(PATH + gamesApiUrl);
 
             if (games != null)
@@ -143,7 +142,7 @@ namespace Half_Chess__Winform_Client_
                 foreach (var game in games)
                 {
                     db.TblGames.Add(new TblGames
-                    {        
+                    {
                         Id = game.Id,
                         PlayerID = game.PlayerID,
                         PlayerName = game.PlayerName,
@@ -152,7 +151,7 @@ namespace Half_Chess__Winform_Client_
                         GameMoves = game.GameMoves,
                         IsWhite = game.IsWhite,
                         Winner = game.Winner
-                    }) ;
+                    });
                 }
 
                 await db.SaveChangesAsync();
@@ -200,10 +199,11 @@ namespace Half_Chess__Winform_Client_
         {
             if (user != null)
             {
-                await GetGameDB();
+                // await GetGameDB();
+                await GetUserGames(user.Id);
                 tblBindingSource.DataSource =
                (from game in db.TblGames
-                where game.PlayerID == user.Id
+                // where game.PlayerID == user.Id
                 select new
                 {
                     GameID = game.Id,
