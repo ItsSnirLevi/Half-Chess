@@ -38,29 +38,29 @@
             // MessageLabel
             // 
             this.MessageLabel.AutoSize = true;
-            this.MessageLabel.Font = new System.Drawing.Font("Rockwell Nova Cond", 48F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MessageLabel.Font = new System.Drawing.Font("Arial", 25.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MessageLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
             this.MessageLabel.Location = new System.Drawing.Point(12, 117);
             this.MessageLabel.Name = "MessageLabel";
-            this.MessageLabel.Size = new System.Drawing.Size(196, 108);
+            this.MessageLabel.Size = new System.Drawing.Size(139, 50);
             this.MessageLabel.TabIndex = 0;
             this.MessageLabel.Text = "label1";
             // 
             // GameOverLabel
             // 
             this.GameOverLabel.AutoSize = true;
-            this.GameOverLabel.Font = new System.Drawing.Font("Rockwell Nova Cond", 48F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.GameOverLabel.Font = new System.Drawing.Font("Arial", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.GameOverLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(173)))), ((int)(((byte)(181)))));
-            this.GameOverLabel.Location = new System.Drawing.Point(12, 9);
+            this.GameOverLabel.Location = new System.Drawing.Point(1, 19);
             this.GameOverLabel.Name = "GameOverLabel";
-            this.GameOverLabel.Size = new System.Drawing.Size(308, 108);
+            this.GameOverLabel.Size = new System.Drawing.Size(339, 67);
             this.GameOverLabel.TabIndex = 1;
             this.GameOverLabel.Text = "Game Over";
             // 
             // NewGameBtn
             // 
             this.NewGameBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
-            this.NewGameBtn.Font = new System.Drawing.Font("Rockwell Nova Cond", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.NewGameBtn.Font = new System.Drawing.Font("Arial", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.NewGameBtn.Location = new System.Drawing.Point(65, 258);
             this.NewGameBtn.Name = "NewGameBtn";
             this.NewGameBtn.Size = new System.Drawing.Size(178, 56);
@@ -72,7 +72,7 @@
             // ExitBtn
             // 
             this.ExitBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
-            this.ExitBtn.Font = new System.Drawing.Font("Rockwell Nova Cond", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ExitBtn.Font = new System.Drawing.Font("Arial", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ExitBtn.Location = new System.Drawing.Point(65, 339);
             this.ExitBtn.Name = "ExitBtn";
             this.ExitBtn.Size = new System.Drawing.Size(178, 56);

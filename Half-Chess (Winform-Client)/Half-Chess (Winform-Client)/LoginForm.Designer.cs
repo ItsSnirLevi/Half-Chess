@@ -55,28 +55,29 @@
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tblDataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tblBindingSource)).BeginInit();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // WelcomeLabel
             // 
             this.WelcomeLabel.AutoSize = true;
             this.WelcomeLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(62)))), ((int)(((byte)(70)))));
-            this.WelcomeLabel.Font = new System.Drawing.Font("Rockwell Nova Cond", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.WelcomeLabel.Font = new System.Drawing.Font("Arial", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.WelcomeLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(173)))), ((int)(((byte)(181)))));
             this.WelcomeLabel.Location = new System.Drawing.Point(12, 9);
             this.WelcomeLabel.Name = "WelcomeLabel";
-            this.WelcomeLabel.Size = new System.Drawing.Size(403, 54);
+            this.WelcomeLabel.Size = new System.Drawing.Size(472, 46);
             this.WelcomeLabel.TabIndex = 0;
             this.WelcomeLabel.Text = "Welcome to Half-Chess!";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Rockwell Nova Cond", 48F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Font = new System.Drawing.Font("Arial", 48F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(173)))), ((int)(((byte)(181)))));
-            this.label2.Location = new System.Drawing.Point(470, 237);
+            this.label2.Location = new System.Drawing.Point(440, 248);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(219, 108);
+            this.label2.Size = new System.Drawing.Size(285, 89);
             this.label2.TabIndex = 1;
             this.label2.Text = "Sign In";
             // 
@@ -91,11 +92,11 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Rockwell Nova Cond", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Font = new System.Drawing.Font("Rockwell Nova Cond", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
-            this.label3.Location = new System.Drawing.Point(355, 354);
+            this.label3.Location = new System.Drawing.Point(374, 355);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(118, 47);
+            this.label3.Size = new System.Drawing.Size(99, 38);
             this.label3.TabIndex = 4;
             this.label3.Text = "Player ID";
             this.toolTip1.SetToolTip(this.label3, "Enter the ID you registered with");
@@ -104,11 +105,11 @@
             // 
             this.startGame_button.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
             this.startGame_button.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.startGame_button.Font = new System.Drawing.Font("Rockwell Nova Cond", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.startGame_button.Location = new System.Drawing.Point(498, 590);
+            this.startGame_button.Font = new System.Drawing.Font("Arial", 22.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.startGame_button.Location = new System.Drawing.Point(498, 594);
             this.startGame_button.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.startGame_button.Name = "startGame_button";
-            this.startGame_button.Size = new System.Drawing.Size(179, 65);
+            this.startGame_button.Size = new System.Drawing.Size(192, 54);
             this.startGame_button.TabIndex = 5;
             this.startGame_button.Text = "Start Game";
             this.startGame_button.UseVisualStyleBackColor = false;
@@ -118,11 +119,11 @@
             // 
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(62)))), ((int)(((byte)(70)))));
-            this.label1.Font = new System.Drawing.Font("Rockwell Nova", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
             this.label1.Location = new System.Drawing.Point(12, 63);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(817, 96);
+            this.label1.Size = new System.Drawing.Size(797, 92);
             this.label1.TabIndex = 6;
             this.label1.Text = resources.GetString("label1.Text");
             // 
@@ -146,11 +147,11 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Rockwell Nova Cond", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
             this.label4.Location = new System.Drawing.Point(817, 306);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(161, 31);
+            this.label4.Size = new System.Drawing.Size(190, 23);
             this.label4.TabIndex = 8;
             this.label4.Text = "Turn time in seconds";
             // 
@@ -158,11 +159,11 @@
             // 
             this.WhiteRadioButton.AutoSize = true;
             this.WhiteRadioButton.Checked = true;
-            this.WhiteRadioButton.Font = new System.Drawing.Font("Rockwell Nova Cond", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.WhiteRadioButton.Font = new System.Drawing.Font("Arial", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.WhiteRadioButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
             this.WhiteRadioButton.Location = new System.Drawing.Point(6, 21);
             this.WhiteRadioButton.Name = "WhiteRadioButton";
-            this.WhiteRadioButton.Size = new System.Drawing.Size(63, 28);
+            this.WhiteRadioButton.Size = new System.Drawing.Size(77, 25);
             this.WhiteRadioButton.TabIndex = 9;
             this.WhiteRadioButton.TabStop = true;
             this.WhiteRadioButton.Text = "White";
@@ -172,11 +173,11 @@
             // BlackRadioButton
             // 
             this.BlackRadioButton.AutoSize = true;
-            this.BlackRadioButton.Font = new System.Drawing.Font("Rockwell Nova Cond", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BlackRadioButton.Font = new System.Drawing.Font("Arial", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BlackRadioButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
             this.BlackRadioButton.Location = new System.Drawing.Point(6, 47);
             this.BlackRadioButton.Name = "BlackRadioButton";
-            this.BlackRadioButton.Size = new System.Drawing.Size(63, 28);
+            this.BlackRadioButton.Size = new System.Drawing.Size(75, 25);
             this.BlackRadioButton.TabIndex = 10;
             this.BlackRadioButton.Text = "Black";
             this.BlackRadioButton.UseVisualStyleBackColor = true;
@@ -185,11 +186,11 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Rockwell Nova Cond", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
             this.label5.Location = new System.Drawing.Point(817, 404);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(113, 31);
+            this.label5.Size = new System.Drawing.Size(142, 23);
             this.label5.TabIndex = 11;
             this.label5.Text = "Choose Pieces";
             // 
@@ -219,11 +220,11 @@
             // 
             this.label6.AutoSize = true;
             this.label6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(62)))), ((int)(((byte)(70)))));
-            this.label6.Font = new System.Drawing.Font("Rockwell Nova Cond", 13.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Font = new System.Drawing.Font("Arial", 13.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(173)))), ((int)(((byte)(181)))));
             this.label6.Location = new System.Drawing.Point(17, 226);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(103, 30);
+            this.label6.Size = new System.Drawing.Size(152, 26);
             this.label6.TabIndex = 15;
             this.label6.Text = "Game History";
             // 
@@ -231,7 +232,7 @@
             // 
             this.submit_button.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
             this.submit_button.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.submit_button.Font = new System.Drawing.Font("Rockwell Nova Cond", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.submit_button.Font = new System.Drawing.Font("Arial", 22.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.submit_button.Location = new System.Drawing.Point(513, 410);
             this.submit_button.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.submit_button.Name = "submit_button";
@@ -254,10 +255,10 @@
             // refresh_button
             // 
             this.refresh_button.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
-            this.refresh_button.Font = new System.Drawing.Font("Rockwell Nova Cond", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.refresh_button.Location = new System.Drawing.Point(226, 227);
+            this.refresh_button.Font = new System.Drawing.Font("Arial", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.refresh_button.Location = new System.Drawing.Point(207, 44);
             this.refresh_button.Name = "refresh_button";
-            this.refresh_button.Size = new System.Drawing.Size(75, 37);
+            this.refresh_button.Size = new System.Drawing.Size(94, 37);
             this.refresh_button.TabIndex = 18;
             this.refresh_button.Text = "Refresh";
             this.refresh_button.UseVisualStyleBackColor = false;
@@ -266,10 +267,10 @@
             // ReplayButton
             // 
             this.ReplayButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
-            this.ReplayButton.Font = new System.Drawing.Font("Rockwell Nova Cond", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ReplayButton.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ReplayButton.Location = new System.Drawing.Point(89, 575);
             this.ReplayButton.Name = "ReplayButton";
-            this.ReplayButton.Size = new System.Drawing.Size(113, 37);
+            this.ReplayButton.Size = new System.Drawing.Size(142, 37);
             this.ReplayButton.TabIndex = 20;
             this.ReplayButton.Text = "Replay Game";
             this.ReplayButton.UseVisualStyleBackColor = false;
@@ -287,6 +288,7 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(62)))), ((int)(((byte)(70)))));
+            this.panel2.Controls.Add(this.refresh_button);
             this.panel2.Location = new System.Drawing.Point(0, 183);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(323, 513);
@@ -300,7 +302,6 @@
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(40)))), ((int)(((byte)(49)))));
             this.ClientSize = new System.Drawing.Size(1045, 690);
             this.Controls.Add(this.ReplayButton);
-            this.Controls.Add(this.refresh_button);
             this.Controls.Add(this.Player_label);
             this.Controls.Add(this.submit_button);
             this.Controls.Add(this.label6);
@@ -327,6 +328,7 @@
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tblDataGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tblBindingSource)).EndInit();
+            this.panel2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 

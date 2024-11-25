@@ -89,10 +89,11 @@ namespace Half_Chess__Winform_Client_
                          // where game.PlayerID == user.Id
                          select new
                          {
-                             GameID = game.Id,
                              GameTime = game.StartGameTime,
                              Duration = game.GameDuration,
-                             Winner = game.Winner
+                             Winner = game.Winner,
+                             Pieces = game.IsWhite ? "White" : "Black",
+                             GameID = game.Id
                          }).ToList();
                 tblDataGridView.DataSource = tblBindingSource;
             }
@@ -206,11 +207,11 @@ namespace Half_Chess__Winform_Client_
                 // where game.PlayerID == user.Id
                 select new
                 {
-                    GameID = game.Id,
                     GameTime = game.StartGameTime,
                     Duration = game.GameDuration,
                     Winner = (string)game.Winner,
-                    Pieces = game.IsWhite ? "White" : "Black"
+                    Pieces = game.IsWhite ? "White" : "Black",
+                    GameID = game.Id,
                 }).ToList();
                 tblDataGridView.DataSource = tblBindingSource;
             }
@@ -228,7 +229,7 @@ namespace Half_Chess__Winform_Client_
             if (tblDataGridView.SelectedRows.Count > 0) 
             {
                 var selectedRow = tblDataGridView.SelectedRows[0];
-                var id = Convert.ToInt32(selectedRow.Cells[0].Value);
+                var id = Convert.ToInt32(selectedRow.Cells["GameID"].Value);
 
                 TblGames row = db.TblGames.FirstOrDefault(r => r.Id == id);
 
