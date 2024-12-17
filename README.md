@@ -30,15 +30,17 @@ Welcome to **Half Chess**, where strategy meets speed on a condensed battlefield
 ## 📚 Features
 - Sign-Up & Login: Register on the Razor website and use your game ID to log in on the WinForms client.
 - Game Tracking: Each game is tracked and can be replayed on the client.
+- Replay Feature: Watch replays of past games directly on the client to analyze and learn from your gameplay.
 - Dynamic Gameplay: Experience the thrill of Half Chess with time-limited moves and unique pawn mechanics.
 - Database Integration: View and query your game history using the Razor website.
 - Tactical Drawing: Draw on the game board to illustrate and plan your strategies.
   
 ## 📸 Screenshots
 ![image](https://github.com/user-attachments/assets/f8d6ac81-a739-4de4-b3d3-4e92389cc844)
-![image](https://github.com/user-attachments/assets/f7afeb05-4ea3-44e3-846c-7175105c5002)
-![image](https://github.com/user-attachments/assets/419ae9bf-8da3-47eb-99aa-a8c7ad0083f8)
-![image](https://github.com/user-attachments/assets/c79e6d45-7838-4096-9fe1-dfed61fa457c)
+![image](https://github.com/user-attachments/assets/3714b3fa-af73-49e1-aec5-2f54ecbcc48f)
+![image](https://github.com/user-attachments/assets/2cc30d4c-bf5e-4a34-9fbe-c0bf3694e279)
+![image](https://github.com/user-attachments/assets/32a27409-da76-4a24-bfab-a620da5c614c)
+
 
 
 ## 🤝 Contributing
