@@ -10,7 +10,7 @@ Welcome to **Half Chess**, where strategy meets speed on a condensed battlefield
 
 ## ⏱ Speed Matters
 
-- Players have limited time to make each move, keeping the game dynamic and thrilling.
+- Players have limited time to make each move, keeping the game dynamic and thrilling
 - **Miss your timer, and it’s game over!**
 
 ## 🖥 Project Overview
